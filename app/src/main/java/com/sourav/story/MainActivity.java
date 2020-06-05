@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner{
                 BlendModeCompat.SRC_ATOP));
         toolbar.setTitleTextColor(getResources().getColor(R.color.grey_80));
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("News Light Horizontal");
+        getSupportActionBar().setTitle(getTitle());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Tools.setSystemBarColor(this, R.color.grey_5);
         Tools.setSystemBarLight(this);
