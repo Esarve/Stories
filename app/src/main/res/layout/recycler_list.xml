@@ -48,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/listBody"
                 android:layout_alignParentEnd="true"
+                android:textSize="16sp"
                 android:text="10:10 PM"/>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
