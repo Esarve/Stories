@@ -8,4 +8,10 @@
         android:title="Search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/nightSwitch"
+        android:icon="@drawable/ic_night_24dp"
+        android:title="Switch to Night Mode"
+        app:showAsAction="ifRoom"/>
 </menu>

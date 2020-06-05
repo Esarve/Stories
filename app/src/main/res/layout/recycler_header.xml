@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/headerParent"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardBackgroundColor="@color/colorAccentLight"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
+
+            <TextView
+                android:id="@+id/headerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-thin"
+                android:text="Hi Sourav"
+                android:textAppearance="@style/TextAppearance.Subhead.Bold"
+                android:textColor="@color/grey_10"
+                android:textSize="56sp" />
+
+            <TextView
+                android:id="@+id/headerText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="How was your day?"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textColor="@color/grey_10"
+                android:textSize="24sp"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
