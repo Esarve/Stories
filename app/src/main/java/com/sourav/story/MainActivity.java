@@ -5,6 +5,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.BlendModeColorFilterCompat;
@@ -12,18 +13,27 @@ import androidx.core.graphics.BlendModeCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements OnRVClickListner{
+    private static final String TAG = "Main Activity" ;
     private List<StoryData> story = new ArrayList<>();
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initToolbar();
+        initView();
         getData();
+    }
+
+    private void initView() {
+        fab = findViewById(R.id.fab);
     }
 
     private void initToolbar() {
@@ -41,22 +51,43 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner{
     }
 
     private void getData() {
-        story.add(new StoryData("10:20 PM", "20 January","This is a demo text"));
-        story.add(new StoryData("6:30 AM","5 February","This is something i've written"));
-        story.add(new StoryData("9:30 PM","3 July","Good Night!"));
-        story.add(new StoryData("7:25 PM","8 March","IDK what happened today"));
-        initRview();
+        for (int i=0; i<10; i++){
+            story.add(new StoryData("10:20 PM", "20 January","This is a demo text"));
+            story.add(new StoryData("6:30 AM","5 February","This is something i've written"));
+            story.add(new StoryData("9:30 PM","3 July","Good Night!"));
+            story.add(new StoryData("7:25 PM","8 March","IDK what happened today"));
+        }
+        initRecyclerView();
     }
 
-    private void initRview() {
+    private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         NewAdapter newAdapter = new NewAdapter(this, story);
         recyclerView.setAdapter(newAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy >0) {
+                    // Scroll Down
+                    if (fab.isShown()) {
+                        fab.hide();
+                    }
+                }
+                else if (dy <0) {
+                    // Scroll Up
+                    if (!fab.isShown()) {
+                        fab.show();
+                    }
+                }
+            }
+        });
         newAdapter.setOnClick(MainActivity.this);
     }
 
+    //Init appbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search_setting, menu);
