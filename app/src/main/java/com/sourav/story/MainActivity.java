@@ -40,6 +40,10 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     private void initView() {
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(this);
+
+        tools.setSystemBarColor(this, R.color.grey_5);
+        tools.setSystemBarLight(this);
+        tools.setNavigationBarColor(getWindow().getDecorView(),this,R.color.grey_3,true);
     }
 
     private void initToolbar() {
@@ -52,8 +56,6 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getTitle());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        tools.setSystemBarColor(this, R.color.grey_5);
-        tools.setSystemBarLight(this);
     }
 
     private void getData() {
