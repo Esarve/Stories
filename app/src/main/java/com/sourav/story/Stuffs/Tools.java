@@ -1,4 +1,4 @@
-package com.sourav.story;
+package com.sourav.story.Stuffs;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
@@ -15,6 +15,11 @@ import androidx.core.graphics.BlendModeColorFilterCompat;
 import androidx.core.graphics.BlendModeCompat;
 
 public class Tools {
+
+    public static final String TIME = "header";
+    public static final String  BODY = "body";
+    public static final String DATE = "date";
+    public static final String POSITION = "pos";
 
     private static Tools instance;
 

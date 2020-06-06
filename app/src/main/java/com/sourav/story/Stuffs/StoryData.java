@@ -1,4 +1,4 @@
-package com.sourav.story;
+package com.sourav.story.Stuffs;
 
 public class StoryData {
     private String uniqueID;

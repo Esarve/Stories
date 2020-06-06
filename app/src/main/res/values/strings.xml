@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Stories</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam et neque magna. Nulla facilisi. Etiam non neque at sapien commodo vestibulum a a odio. Nullam vulputate, arcu quis ullamcorper ultricies, neque ex pretium enim, a tempor ipsum turpis sed arcu. Integer porta ipsum sit amet leo pharetra, quis vulputate diam tristique. In risus neque, congue bibendum accumsan tempus, luctus sed orci. Nulla facilisi. Praesent consectetur feugiat justo. Aliquam et bibendum nulla. Aenean non tortor dui. Morbi blandit lacus non orci scelerisque, vel fringilla odio fringilla. Integer vel hendrerit sapien. Aenean finibus ligula eget odio feugiat tristique. Sed id tortor non enim imperdiet faucibus. Suspendisse finibus luctus vulputate. Aenean placerat orci lorem, sit amet finibus arcu tincidunt at.</string>
 </resources>

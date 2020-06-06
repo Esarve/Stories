@@ -1,4 +1,4 @@
-package com.sourav.story;
+package com.sourav.story.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,16 +10,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sourav.story.R;
+
 public class HeaderAdapter extends RecyclerView.Adapter<HeaderAdapter.ViewHolder> {
     private String headerName;
     private String headerText;
-    private Context mContext;
-    private OnRVClickListner listner;
 
     public HeaderAdapter(String headerName, String headerText, Context mContext) {
         this.headerName = headerName;
         this.headerText = headerText;
-        this.mContext = mContext;
     }
 
     @NonNull
@@ -36,21 +35,11 @@ public class HeaderAdapter extends RecyclerView.Adapter<HeaderAdapter.ViewHolder
             viewHolder.name.setText(headerName);
             viewHolder.body.setText(headerText);
         }
-        viewHolder.parent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listner.onClick(i);
-            }
-        });
     }
 
     @Override
     public int getItemCount() {
         return 1;
-    }
-
-    public void setOnClick(OnRVClickListner onClick){
-        listner = onClick;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
