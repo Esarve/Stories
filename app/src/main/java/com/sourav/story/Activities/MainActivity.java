@@ -1,4 +1,4 @@
-package com.sourav.story;
+package com.sourav.story.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,11 +17,19 @@ import androidx.recyclerview.widget.MergeAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sourav.story.Adapters.HeaderAdapter;
+import com.sourav.story.Adapters.NewAdapter;
+import com.sourav.story.Interfaces.OnBottomSheetClickListner;
+import com.sourav.story.Interfaces.OnRVClickListner;
+import com.sourav.story.OtherKindsOfViews.BottomSheetViewer;
+import com.sourav.story.R;
+import com.sourav.story.Stuffs.StoryData;
+import com.sourav.story.Stuffs.Tools;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements OnRVClickListner, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements OnRVClickListner, OnBottomSheetClickListner, View.OnClickListener {
     private static final String TAG = "Main Activity" ;
     private List<StoryData> story = new ArrayList<>();
     private FloatingActionButton fab;
@@ -62,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         for (int i=0; i<10; i++){
             story.add(new StoryData("10:20 PM", "20 January","This is a demo text"));
             story.add(new StoryData("6:30 AM","5 February","This is something i've written"));
-            story.add(new StoryData("9:30 PM","3 July","Good Night!"));
+            story.add(new StoryData("9:30 PM","3 July",getResources().getString(R.string.lorem)));
             story.add(new StoryData("7:25 PM","8 March","IDK what happened today"));
         }
         initRecyclerView();
@@ -105,12 +113,9 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         MenuItem nightmode = menu.findItem(R.id.nightSwitch);
-        nightmode.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Toast.makeText(getApplicationContext(),"NIGHT MODE: WIP", Toast.LENGTH_SHORT).show();
-                return false;
-            }
+        nightmode.setOnMenuItemClickListener(item -> {
+            Toast.makeText(getApplicationContext(),"NIGHT MODE: WIP", Toast.LENGTH_SHORT).show();
+            return false;
         });
         //SearchView searchView = (SearchView) searchItem.getActionView();
         return true;
@@ -120,14 +125,26 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     //OnClick Listeners
     @Override
     public void onClick(int pos) {
-        Toast.makeText(this, "Clicked at pos "+ pos ,Toast.LENGTH_SHORT).show();
+        // Create Alert using Builder
+        String titleText = story.get(pos).getDate() + " " + story.get(pos).getTime();
+        String bodyText = story.get(pos).getBody();
+        BottomSheetViewer bottomSheetViewer = new BottomSheetViewer();
+        Bundle args = new Bundle();
+        args.putString(BottomSheetViewer.HEADER,titleText);
+        args.putString(BottomSheetViewer.BODY,bodyText);
+        bottomSheetViewer.setArguments(args);
+        bottomSheetViewer.show(getSupportFragmentManager(), "viewer");
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == fab.getId()){
-            Toast.makeText(this,"FAB CLICKED", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(MainActivity.this, WriteActivity.class));
         }
+    }
+
+    @Override
+    public void onBottomSheetButtonClick(View view) {
+        Toast.makeText(this,"BottomSheet Button Clicked", Toast.LENGTH_SHORT).show();
     }
 }

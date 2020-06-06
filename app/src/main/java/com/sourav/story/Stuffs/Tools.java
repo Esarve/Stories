@@ -1,4 +1,4 @@
-package com.sourav.story;
+package com.sourav.story.Stuffs;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;

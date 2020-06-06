@@ -1,4 +1,4 @@
-package com.sourav.story;
+package com.sourav.story.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.sourav.story.Interfaces.OnRVClickListner;
+import com.sourav.story.R;
 
 public class HeaderAdapter extends RecyclerView.Adapter<HeaderAdapter.ViewHolder> {
     private String headerName;

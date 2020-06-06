@@ -38,6 +38,7 @@
                 android:layout_below="@+id/listDate"
                 android:layout_marginTop="4dp"
                 android:fontFamily="sans-serif"
+                android:maxLines="1"
                 android:text="Bla bla bla bla bla bla bla"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 android:textSize="20sp"/>

@@ -119,7 +119,7 @@
     </style>
 
     <style name="CustomTabTextAppearance" parent="TextAppearance.Design.Tab">
-        <item name="android:textColor">@color/grey_10</item>
+        <item name="android:textColor">@color/grey_3</item>
         <item name="android:textStyle">bold</item>
         <item name="textAllCaps">true</item>
     </style>
