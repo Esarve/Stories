@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     private FloatingActionButton fab;
     private MenuItem nightmode;
     private Tools tools = Tools.getInstance();
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         tools.setSystemBarColor(this, R.color.grey_5);
         tools.setSystemBarLight(this);
         tools.setNavigationBarColor(getWindow().getDecorView(),this,R.color.grey_3,true);
+
+        intent = new Intent(MainActivity.this,WriteActivity.class);
     }
 
     private void initToolbar() {
@@ -121,30 +124,52 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         return true;
     }
 
+    private Bundle bundleData(int i){
+
+        String date = story.get(i).getDate();
+        String time = story.get(i).getTime();
+        String body = story.get(i).getBody();
+
+        Bundle args = new Bundle();
+        args.putString(Tools.BODY,body);
+        args.putString(Tools.DATE,date);
+        args.putString(Tools.TIME,time);
+        args.putInt(Tools.POSITION,i);
+
+        return args;
+    }
+
+    public void openEditor(int pos){
+        intent.putExtras(bundleData(pos));
+        openEditor();
+    }
+
+    public void openEditor(){
+        startActivity(intent);
+    }
+
 
     //OnClick Listeners
     @Override
     public void onClick(int pos) {
-        // Create Alert using Builder
-        String titleText = story.get(pos).getDate() + " " + story.get(pos).getTime();
-        String bodyText = story.get(pos).getBody();
+        // Create Bottom Sheet
         BottomSheetViewer bottomSheetViewer = new BottomSheetViewer();
-        Bundle args = new Bundle();
-        args.putString(BottomSheetViewer.HEADER,titleText);
-        args.putString(BottomSheetViewer.BODY,bodyText);
-        bottomSheetViewer.setArguments(args);
+        bottomSheetViewer.setArguments(bundleData(pos));
         bottomSheetViewer.show(getSupportFragmentManager(), "viewer");
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == fab.getId()){
-            startActivity(new Intent(MainActivity.this, WriteActivity.class));
+            openEditor();
         }
     }
 
     @Override
-    public void onBottomSheetButtonClick(View view) {
-        Toast.makeText(this,"BottomSheet Button Clicked", Toast.LENGTH_SHORT).show();
+    public void onBottomSheetButtonClick(View view, int pos) {
+        //Toast.makeText(this,"BottomSheet Button Clicked", Toast.LENGTH_SHORT).show();
+        openEditor(pos);
     }
+
+
 }

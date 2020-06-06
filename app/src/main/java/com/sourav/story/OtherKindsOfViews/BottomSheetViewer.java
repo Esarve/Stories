@@ -14,14 +14,14 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.sourav.story.Interfaces.OnBottomSheetClickListner;
 import com.sourav.story.R;
+import com.sourav.story.Stuffs.Tools;
 
 public class BottomSheetViewer extends BottomSheetDialogFragment {
-    public static final String HEADER = "header";
-    public static final String  BODY = "body";
     private OnBottomSheetClickListner clickListener;
-    private String header, body;
+    private String time, date, body;
     private TextView tvHeader, tvBody;
     private Button btnEdit, btnDismiss;
+    private int pos;
 
     @Nullable
     @Override
@@ -29,8 +29,10 @@ public class BottomSheetViewer extends BottomSheetDialogFragment {
         View view = inflater.inflate(R.layout.popup_viewer, container, false);
 
         if (getArguments()!=null){
-            header = getArguments().getString(HEADER, "-");
-            body = getArguments().getString(BODY,"-");
+            time = getArguments().getString(Tools.TIME, "-");
+            date =getArguments().getString(Tools.DATE, "-");
+            body = getArguments().getString(Tools.BODY,"-");
+            pos = getArguments().getInt(Tools.POSITION,0);
         }
 
         initView(view);
@@ -45,7 +47,7 @@ public class BottomSheetViewer extends BottomSheetDialogFragment {
         btnDismiss = view.findViewById(R.id.btnDismiss);
 
         btnEdit.setOnClickListener(v -> {
-            clickListener.onBottomSheetButtonClick(v);
+            clickListener.onBottomSheetButtonClick(v, pos);
             dismiss();
         });
 
@@ -55,6 +57,7 @@ public class BottomSheetViewer extends BottomSheetDialogFragment {
     }
 
     private void initData() {
+        String header = date + " " +time;
         tvBody.setText(body);
         tvHeader.setText(header);
     }

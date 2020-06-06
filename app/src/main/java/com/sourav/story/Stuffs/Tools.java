@@ -16,6 +16,11 @@ import androidx.core.graphics.BlendModeCompat;
 
 public class Tools {
 
+    public static final String TIME = "header";
+    public static final String  BODY = "body";
+    public static final String DATE = "date";
+    public static final String POSITION = "pos";
+
     private static Tools instance;
 
     public static Tools getInstance(){
