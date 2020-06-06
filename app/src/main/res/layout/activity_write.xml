@@ -7,6 +7,22 @@ android:layout_height="match_parent"
 tools:context=".WriteActivity">
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomBar"
+        android:orientation="vertical">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="top"
+            android:hint="Write Something..."
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
@@ -23,28 +39,31 @@ tools:context=".WriteActivity">
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/editTimeDate"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="horizontal"
+                android:clickable="true"
+                android:focusable="true"
                 android:padding="5dp">
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/map_button"
-                    android:layout_width="?attr/actionBarSize"
-                    android:layout_height="?attr/actionBarSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:tint="@color/colorPrimary"
+                    android:tint="@color/colorAccentLight"
                     app:srcCompat="@drawable/ic_clock_24dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="2"
+                    android:layout_marginStart="2dp"
                     android:text="Time / Date"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:textColor="@color/colorPrimary"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -54,27 +73,30 @@ tools:context=".WriteActivity">
                 android:layout_height="0dp" />
 
             <LinearLayout
+                android:id="@+id/editCancel"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="5dp">
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/list_button"
-                    android:layout_width="?attr/actionBarSize"
-                    android:layout_height="?attr/actionBarSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:tint="@color/colorPrimary"
-                    app:srcCompat="@drawable/ic_clear_24dp" />
+                    android:tint="@color/colorAccentLight"
+                    app:srcCompat="@drawable/ic_clear_24dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cancel"
+                    android:layout_marginStart="2dp"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:textColor="@color/colorPrimary"
-                    android:textStyle="bold" />
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:textStyle="bold"/>
 
             </LinearLayout>
 
@@ -89,8 +111,8 @@ tools:context=".WriteActivity">
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:layout_marginBottom="15dp"
-        android:tint="@android:color/white"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorAccentLight"
+        app:tint="@android:color/white"
         app:elevation="2dp"
         app:fabSize="normal"
         app:rippleColor="@color/deep_orange_400"

@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     private List<StoryData> story = new ArrayList<>();
     private FloatingActionButton fab;
     private MenuItem nightmode;
+    private Tools tools = Tools.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +52,8 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getTitle());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Tools.setSystemBarColor(this, R.color.grey_5);
-        Tools.setSystemBarLight(this);
+        tools.setSystemBarColor(this, R.color.grey_5);
+        tools.setSystemBarLight(this);
     }
 
     private void getData() {
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search_setting, menu);
-        Tools.changeMenuIconColor(menu, getResources().getColor(R.color.grey_80));
+        tools.changeMenuIconColor(menu, getResources().getColor(R.color.grey_80));
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         MenuItem nightmode = menu.findItem(R.id.nightSwitch);
