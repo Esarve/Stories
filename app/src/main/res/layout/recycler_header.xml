@@ -30,19 +30,17 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-thin"
                 android:text="Hi Sourav"
-                android:textAppearance="@style/TextAppearance.Subhead.Bold"
                 android:textColor="@color/grey_10"
-                android:textSize="56sp" />
+                android:textSize="40sp" />
 
             <TextView
                 android:id="@+id/headerText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:text="How was your day?"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:fontFamily="sans-serif-light"
+                android:text="You have currently 120 entries"
                 android:textColor="@color/grey_10"
-                android:textSize="24sp"/>
+                android:textSize="20sp"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>
