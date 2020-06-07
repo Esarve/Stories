@@ -1,8 +1,11 @@
 package com.sourav.story.Stuffs;
 
+import java.util.Objects;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class RealmEngine {
     public static RealmEngine instance;
@@ -43,9 +46,20 @@ public class RealmEngine {
         });
     }
 
+    public StoryData getSpecificData(long timestamp) {
+        return realm.copyFromRealm(Objects.requireNonNull(
+                realm.where(StoryData.class).equalTo("timestamp", timestamp).findFirst()));
+    }
+
+    public void addSpecificStory(StoryData deletedStory) {
+        realm.executeTransaction(realm -> {
+            realm.insert(deletedStory);
+        });
+    }
+
 
     public RealmResults<StoryData> getResults(){
-        return realm.where(StoryData.class).findAll();
+        return realm.where(StoryData.class).sort("timestamp", Sort.DESCENDING).findAll();
     }
 
 }

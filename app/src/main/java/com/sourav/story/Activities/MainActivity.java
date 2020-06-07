@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.graphics.BlendModeColorFilterCompat;
 import androidx.core.graphics.BlendModeCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.MergeAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.sourav.story.Adapters.HeaderAdapter;
 import com.sourav.story.Adapters.NewAdapter;
 import com.sourav.story.Interfaces.OnBottomSheetClickListner;
@@ -38,6 +40,7 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 public class MainActivity extends AppCompatActivity implements OnRVClickListner, OnBottomSheetClickListner, View.OnClickListener {
     private static final String TAG = "Main Activity" ;
+    private CoordinatorLayout parent;
     private List<StoryData> story = new ArrayList<>();
     private FloatingActionButton fab;
     private MenuItem nightmode;
@@ -48,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     private RealmResults<StoryData> realmResults;
     private NewAdapter newAdapter;
     private HeaderAdapter headerAdapter;
-    private MergeAdapter mergeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     }
 
     private void initView() {
+        parent = findViewById(R.id.parent_view);
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(this);
 
@@ -102,13 +105,11 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-
-
     private void initRecyclerView() {
         recyclerView = findViewById(R.id.recyclerView);
         newAdapter = new NewAdapter(this, story);
         headerAdapter = new HeaderAdapter("Hi Sourav", realmResults.size(), this);
-        mergeAdapter = new MergeAdapter(headerAdapter, newAdapter);
+        MergeAdapter mergeAdapter = new MergeAdapter(headerAdapter, newAdapter);
         recyclerView.setAdapter(mergeAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -121,9 +122,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                int pos = viewHolder.getLayoutPosition() - 1;
-                realmEngine.deleteData(story.get(pos).getTimestamp());
-                recyclerView.removeViewAt(pos);
+                performDelete(viewHolder.getLayoutPosition() - 1);
             }
 
             @Override
@@ -170,6 +169,26 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
             }
         });
         newAdapter.setOnClick(MainActivity.this);
+    }
+
+    //Deletes an item and shows toast
+    private void performDelete(int pos) {
+        long timestamp = story.get(pos).getTimestamp();
+        StoryData deletecStory = realmEngine.getSpecificData(timestamp);
+        realmEngine.deleteData(timestamp);
+        recyclerView.removeViewAt(pos);
+        showSnack(deletecStory);
+    }
+
+    private void showSnack(StoryData deletedStory) {
+        Snackbar snackbar = Snackbar
+                .make(parent, "Deleted Successfully!", Snackbar.LENGTH_LONG)
+                .setAction("UNDO", view -> {
+                    realmEngine.addSpecificStory(deletedStory);
+                    Toast.makeText(this, "UNDO huhuhahah", Toast.LENGTH_SHORT).show();
+                });
+
+        snackbar.show();
     }
 
     @Override
@@ -235,17 +254,6 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
 
     @Override
     public void onBottomSheetButtonClick(View view, int pos) {
-        //Toast.makeText(this,"BottomSheet Button Clicked", Toast.LENGTH_SHORT).show();
         openEditor(pos);
     }
-
-    private void getData() {
-        for (int i = 0; i < 10; i++) {
-            story.add(new StoryData("10:20 PM", "20 January", "This is a demo text"));
-            story.add(new StoryData("6:30 AM", "5 February", "This is something i've written"));
-            story.add(new StoryData("9:30 PM", "3 July", getResources().getString(R.string.lorem)));
-            story.add(new StoryData("7:25 PM", "8 March", "IDK what happened today"));
-        }
-    }
-
 }
