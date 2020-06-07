@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activities.WriteActivity">
+            android:name=".Activities.WriteActivity"
+            android:windowSoftInputMode="adjustResize">
         </activity>
         <activity android:name=".Activities.MainActivity">
             <intent-filter>

@@ -23,11 +23,14 @@ import com.sourav.story.Interfaces.OnBottomSheetClickListner;
 import com.sourav.story.Interfaces.OnRVClickListner;
 import com.sourav.story.OtherKindsOfViews.BottomSheetViewer;
 import com.sourav.story.R;
+import com.sourav.story.Stuffs.RealmEngine;
 import com.sourav.story.Stuffs.StoryData;
 import com.sourav.story.Stuffs.Tools;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity implements OnRVClickListner, OnBottomSheetClickListner, View.OnClickListener {
     private static final String TAG = "Main Activity" ;
@@ -36,14 +39,30 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     private MenuItem nightmode;
     private Tools tools = Tools.getInstance();
     private Intent intent;
+    private RealmEngine realmEngine;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initRealm();
         initToolbar();
         initView();
-        getData();
+        initData();
+        //getData();
+        initRecyclerView();
+    }
+
+    private void initData() {
+        story = realmEngine.getResults();
+    }
+
+    private void initRealm() {
+        Realm.init(this);
+        realmEngine = RealmEngine.getInstance();
+        realmEngine.initRealm();
     }
 
     private void initView() {
@@ -76,11 +95,10 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
             story.add(new StoryData("9:30 PM","3 July",getResources().getString(R.string.lorem)));
             story.add(new StoryData("7:25 PM","8 March","IDK what happened today"));
         }
-        initRecyclerView();
     }
 
     private void initRecyclerView() {
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
         NewAdapter newAdapter = new NewAdapter(this, story);
         HeaderAdapter headerAdapter = new HeaderAdapter(null,null, this);
         MergeAdapter mergeAdapter = new MergeAdapter(headerAdapter, newAdapter);
@@ -106,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
             }
         });
         newAdapter.setOnClick(MainActivity.this);
+        recyclerView.invalidate();
     }
 
     //Init appbar
@@ -148,6 +167,11 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         startActivity(intent);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initRecyclerView();
+    }
 
     //OnClick Listeners
     @Override
