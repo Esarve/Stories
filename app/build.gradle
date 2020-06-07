@@ -41,6 +41,8 @@ dependencies {
     //Recycler View
     implementation "androidx.recyclerview:recyclerview:1.2.0-alpha03"
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0-rc01"
-    //Alert
-    implementation 'com.crowdfire.cfalertdialog:cfalertdialog:1.1.0'
+    //Realm
+    implementation 'io.realm:android-adapters:3.1.0'
+    //RecyclerView Swipe
+    implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.2'
 }

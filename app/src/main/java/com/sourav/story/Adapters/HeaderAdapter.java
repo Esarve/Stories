@@ -14,11 +14,11 @@ import com.sourav.story.R;
 
 public class HeaderAdapter extends RecyclerView.Adapter<HeaderAdapter.ViewHolder> {
     private String headerName;
-    private String headerText;
+    private Integer count;
 
-    public HeaderAdapter(String headerName, String headerText, Context mContext) {
+    public HeaderAdapter(String headerName, Integer number, Context mContext) {
         this.headerName = headerName;
-        this.headerText = headerText;
+        count = number;
     }
 
     @NonNull
@@ -31,7 +31,8 @@ public class HeaderAdapter extends RecyclerView.Adapter<HeaderAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
-        if (headerName != null && headerText != null){
+        if (headerName != null && count != null) {
+            String headerText = "You currently have " + count + " entries";
             viewHolder.name.setText(headerName);
             viewHolder.body.setText(headerText);
         }
@@ -42,7 +43,7 @@ public class HeaderAdapter extends RecyclerView.Adapter<HeaderAdapter.ViewHolder
         return 1;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView body;
         LinearLayout parent;

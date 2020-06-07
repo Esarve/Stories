@@ -36,6 +36,14 @@ public class RealmEngine {
         });
     }
 
+    public void deleteData(long timestamp) {
+        realm.executeTransaction(realm -> {
+            RealmResults<StoryData> realmResults = realm.where(StoryData.class).equalTo("timestamp", timestamp).findAll();
+            realmResults.deleteAllFromRealm();
+        });
+    }
+
+
     public RealmResults<StoryData> getResults(){
         return realm.where(StoryData.class).findAll();
     }

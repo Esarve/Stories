@@ -1,6 +1,7 @@
 package com.sourav.story.Activities;
 
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.BlendModeColorFilterCompat;
 import androidx.core.graphics.BlendModeCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.MergeAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class MainActivity extends AppCompatActivity implements OnRVClickListner, OnBottomSheetClickListner, View.OnClickListener {
     private static final String TAG = "Main Activity" ;
@@ -88,23 +91,58 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    private void getData() {
-        for (int i=0; i<10; i++){
-            story.add(new StoryData("10:20 PM", "20 January","This is a demo text"));
-            story.add(new StoryData("6:30 AM","5 February","This is something i've written"));
-            story.add(new StoryData("9:30 PM","3 July",getResources().getString(R.string.lorem)));
-            story.add(new StoryData("7:25 PM","8 March","IDK what happened today"));
-        }
-    }
+
 
     private void initRecyclerView() {
         recyclerView = findViewById(R.id.recyclerView);
         NewAdapter newAdapter = new NewAdapter(this, story);
-        HeaderAdapter headerAdapter = new HeaderAdapter(null,null, this);
+        HeaderAdapter headerAdapter = new HeaderAdapter("Hi Sourav", story.size(), this);
         MergeAdapter mergeAdapter = new MergeAdapter(headerAdapter, newAdapter);
+        mergeAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(mergeAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
+
+        //SWIPE
+        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                int pos = viewHolder.getLayoutPosition() - 1;
+                realmEngine.deleteData(story.get(pos).getTimestamp());
+                recyclerView.removeViewAt(pos);
+                recyclerView.invalidate();
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
+                                    @NonNull RecyclerView.ViewHolder viewHolder,
+                                    float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+                new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                        .addActionIcon(R.drawable.ic_delete_white_24dp)
+                        .setActionIconTint(R.color.colorAccent)
+                        .addSwipeRightLabel("delete")
+                        .addSwipeLeftLabel("delete")
+                        .create()
+                        .decorate();
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+
+            //This method will make the header card unswappable
+            @Override
+            public int getSwipeDirs(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                if (viewHolder instanceof HeaderAdapter.ViewHolder) return 0;
+                return super.getSwipeDirs(recyclerView, viewHolder);
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -124,10 +162,8 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
             }
         });
         newAdapter.setOnClick(MainActivity.this);
-        recyclerView.invalidate();
     }
 
-    //Init appbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search_setting, menu);
@@ -195,5 +231,13 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         openEditor(pos);
     }
 
+    private void getData() {
+        for (int i = 0; i < 10; i++) {
+            story.add(new StoryData("10:20 PM", "20 January", "This is a demo text"));
+            story.add(new StoryData("6:30 AM", "5 February", "This is something i've written"));
+            story.add(new StoryData("9:30 PM", "3 July", getResources().getString(R.string.lorem)));
+            story.add(new StoryData("7:25 PM", "8 March", "IDK what happened today"));
+        }
+    }
 
 }
