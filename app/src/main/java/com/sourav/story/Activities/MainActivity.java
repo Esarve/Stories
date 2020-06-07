@@ -1,6 +1,7 @@
 package com.sourav.story.Activities;
 
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,45 +11,79 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.graphics.BlendModeColorFilterCompat;
 import androidx.core.graphics.BlendModeCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.MergeAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.sourav.story.Adapters.HeaderAdapter;
 import com.sourav.story.Adapters.NewAdapter;
 import com.sourav.story.Interfaces.OnBottomSheetClickListner;
 import com.sourav.story.Interfaces.OnRVClickListner;
 import com.sourav.story.OtherKindsOfViews.BottomSheetViewer;
 import com.sourav.story.R;
+import com.sourav.story.Stuffs.RealmEngine;
 import com.sourav.story.Stuffs.StoryData;
 import com.sourav.story.Stuffs.Tools;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+
 public class MainActivity extends AppCompatActivity implements OnRVClickListner, OnBottomSheetClickListner, View.OnClickListener {
     private static final String TAG = "Main Activity" ;
+    private CoordinatorLayout parent;
     private List<StoryData> story = new ArrayList<>();
-    private FloatingActionButton fab;
+    private ExtendedFloatingActionButton efab;
     private MenuItem nightmode;
     private Tools tools = Tools.getInstance();
     private Intent intent;
+    private RealmEngine realmEngine;
+    private RecyclerView recyclerView;
+    private RealmResults<StoryData> realmResults;
+    private NewAdapter newAdapter;
+    private HeaderAdapter headerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initRealm();
         initToolbar();
         initView();
-        getData();
+        initData();
+        initRecyclerView();
+    }
+
+    private void initData() {
+        story = realmEngine.getResults();
+    }
+
+    private void initRealm() {
+        Realm.init(this);
+        realmEngine = RealmEngine.getInstance();
+        realmEngine.initRealm();
+        realmResults = realmEngine.getResults();
+
+        realmResults.addChangeListener(storyData -> {
+            initData();
+            newAdapter.notifyDataSetChanged();
+            headerAdapter.notifyDataSetChanged();
+        });
     }
 
     private void initView() {
-        fab = findViewById(R.id.fab);
-        fab.setOnClickListener(this);
+        parent = findViewById(R.id.parent_view);
+        efab = findViewById(R.id.fab);
+        efab.setOnClickListener(this);
 
         tools.setSystemBarColor(this, R.color.grey_5);
         tools.setSystemBarLight(this);
@@ -69,38 +104,65 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    private void getData() {
-        for (int i=0; i<10; i++){
-            story.add(new StoryData("10:20 PM", "20 January","This is a demo text"));
-            story.add(new StoryData("6:30 AM","5 February","This is something i've written"));
-            story.add(new StoryData("9:30 PM","3 July",getResources().getString(R.string.lorem)));
-            story.add(new StoryData("7:25 PM","8 March","IDK what happened today"));
-        }
-        initRecyclerView();
-    }
-
     private void initRecyclerView() {
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        NewAdapter newAdapter = new NewAdapter(this, story);
-        HeaderAdapter headerAdapter = new HeaderAdapter(null,null, this);
+        recyclerView = findViewById(R.id.recyclerView);
+        newAdapter = new NewAdapter(this, story);
+        headerAdapter = new HeaderAdapter("Hi Sourav", realmResults.size(), this);
         MergeAdapter mergeAdapter = new MergeAdapter(headerAdapter, newAdapter);
         recyclerView.setAdapter(mergeAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
+
+        //SWIPE
+        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                performDelete(viewHolder.getLayoutPosition() - 1);
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
+                                    @NonNull RecyclerView.ViewHolder viewHolder,
+                                    float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+                new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                        .addActionIcon(R.drawable.ic_delete_white_24dp)
+                        .setActionIconTint(R.color.colorAccent)
+                        .addSwipeRightLabel("delete")
+                        .addSwipeLeftLabel("delete")
+                        .create()
+                        .decorate();
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+
+            //This method will make the header card unswappable
+            @Override
+            public int getSwipeDirs(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                if (viewHolder instanceof HeaderAdapter.ViewHolder) return 0;
+                return super.getSwipeDirs(recyclerView, viewHolder);
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy >0) {
                     // Scroll Down
-                    if (fab.isShown()) {
-                        fab.hide();
+                    if (efab.isShown()) {
+                        efab.shrink();
                     }
                 }
                 else if (dy <0) {
                     // Scroll Up
-                    if (!fab.isShown()) {
-                        fab.show();
+                    if (efab.isShown()) {
+                        efab.extend();
                     }
                 }
             }
@@ -108,7 +170,26 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         newAdapter.setOnClick(MainActivity.this);
     }
 
-    //Init appbar
+    //Deletes an item and shows toast
+    private void performDelete(int pos) {
+        long timestamp = story.get(pos).getTimestamp();
+        StoryData deletecStory = realmEngine.getSpecificData(timestamp);
+        realmEngine.deleteData(timestamp);
+        recyclerView.removeViewAt(pos);
+        showSnack(deletecStory);
+    }
+
+    private void showSnack(StoryData deletedStory) {
+        Snackbar snackbar = Snackbar
+                .make(parent, "Deleted Successfully!", Snackbar.LENGTH_LONG)
+                .setAction("UNDO", view -> {
+                    realmEngine.addSpecificStory(deletedStory);
+                    Toast.makeText(this, "UNDO huhuhahah", Toast.LENGTH_SHORT).show();
+                });
+
+        snackbar.show();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search_setting, menu);
@@ -148,6 +229,11 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         startActivity(intent);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initRecyclerView();
+    }
 
     //OnClick Listeners
     @Override
@@ -160,16 +246,13 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == fab.getId()){
+        if (v.getId() == efab.getId()) {
             openEditor();
         }
     }
 
     @Override
     public void onBottomSheetButtonClick(View view, int pos) {
-        //Toast.makeText(this,"BottomSheet Button Clicked", Toast.LENGTH_SHORT).show();
         openEditor(pos);
     }
-
-
 }

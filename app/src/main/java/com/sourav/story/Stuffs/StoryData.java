@@ -1,11 +1,18 @@
 package com.sourav.story.Stuffs;
 
-public class StoryData {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class StoryData extends RealmObject {
     private String uniqueID;
     private String time;
     private String Date;
     private String body;
+    @PrimaryKey
     private long timestamp;
+
+    public StoryData() {
+    }
 
     public StoryData(String uniqueID, String time, String date, String body, long timestamp) {
         this.uniqueID = uniqueID;
