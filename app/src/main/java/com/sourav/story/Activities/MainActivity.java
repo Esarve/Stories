@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class MainActivity extends AppCompatActivity implements OnRVClickListner, OnBottomSheetClickListner, View.OnClickListener {
@@ -44,12 +45,15 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     private Intent intent;
     private RealmEngine realmEngine;
     private RecyclerView recyclerView;
+    private RealmResults<StoryData> realmResults;
+    private NewAdapter newAdapter;
+    private HeaderAdapter headerAdapter;
+    private MergeAdapter mergeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         initRealm();
         initToolbar();
         initView();
@@ -66,6 +70,13 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         Realm.init(this);
         realmEngine = RealmEngine.getInstance();
         realmEngine.initRealm();
+        realmResults = realmEngine.getResults();
+
+        realmResults.addChangeListener(storyData -> {
+            initData();
+            newAdapter.notifyDataSetChanged();
+            headerAdapter.notifyDataSetChanged();
+        });
     }
 
     private void initView() {
@@ -95,13 +106,11 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
 
     private void initRecyclerView() {
         recyclerView = findViewById(R.id.recyclerView);
-        NewAdapter newAdapter = new NewAdapter(this, story);
-        HeaderAdapter headerAdapter = new HeaderAdapter("Hi Sourav", story.size(), this);
-        MergeAdapter mergeAdapter = new MergeAdapter(headerAdapter, newAdapter);
-        mergeAdapter.notifyDataSetChanged();
+        newAdapter = new NewAdapter(this, story);
+        headerAdapter = new HeaderAdapter("Hi Sourav", realmResults.size(), this);
+        mergeAdapter = new MergeAdapter(headerAdapter, newAdapter);
         recyclerView.setAdapter(mergeAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
 
         //SWIPE
         ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
@@ -115,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
                 int pos = viewHolder.getLayoutPosition() - 1;
                 realmEngine.deleteData(story.get(pos).getTimestamp());
                 recyclerView.removeViewAt(pos);
-                recyclerView.invalidate();
             }
 
             @Override

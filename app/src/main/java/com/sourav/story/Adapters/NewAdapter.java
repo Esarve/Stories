@@ -44,12 +44,7 @@ public class NewAdapter extends RecyclerView.Adapter<NewAdapter.ViewHolder> {
         viewHolder.title.setText(story.getBody());
         viewHolder.time.setText(story.getTime());
         viewHolder.date.setText(story.getDate());
-        viewHolder.parent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listner.onClick(i);
-            }
-        });
+        viewHolder.parent.setOnClickListener(v -> listner.onClick(i));
     }
 
     @Override
