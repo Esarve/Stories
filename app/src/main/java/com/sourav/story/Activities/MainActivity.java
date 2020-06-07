@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.MergeAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.sourav.story.Adapters.HeaderAdapter;
 import com.sourav.story.Adapters.NewAdapter;
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     private static final String TAG = "Main Activity" ;
     private CoordinatorLayout parent;
     private List<StoryData> story = new ArrayList<>();
-    private FloatingActionButton fab;
+    private ExtendedFloatingActionButton efab;
     private MenuItem nightmode;
     private Tools tools = Tools.getInstance();
     private Intent intent;
@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         initToolbar();
         initView();
         initData();
-        //getData();
         initRecyclerView();
     }
 
@@ -83,8 +82,8 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
 
     private void initView() {
         parent = findViewById(R.id.parent_view);
-        fab = findViewById(R.id.fab);
-        fab.setOnClickListener(this);
+        efab = findViewById(R.id.fab);
+        efab.setOnClickListener(this);
 
         tools.setSystemBarColor(this, R.color.grey_5);
         tools.setSystemBarLight(this);
@@ -156,14 +155,14 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy >0) {
                     // Scroll Down
-                    if (fab.isShown()) {
-                        fab.hide();
+                    if (efab.isShown()) {
+                        efab.shrink();
                     }
                 }
                 else if (dy <0) {
                     // Scroll Up
-                    if (!fab.isShown()) {
-                        fab.show();
+                    if (efab.isShown()) {
+                        efab.extend();
                     }
                 }
             }
@@ -247,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == fab.getId()){
+        if (v.getId() == efab.getId()) {
             openEditor();
         }
     }
