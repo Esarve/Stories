@@ -1,18 +1,26 @@
 package com.sourav.story.Stuffs;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.BlendModeColorFilterCompat;
 import androidx.core.graphics.BlendModeCompat;
+
+import com.sourav.story.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -90,6 +98,21 @@ public class Tools {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    public void errorToast(Context context, String message) {
+        Toast toast = new Toast(context);
+        toast.setDuration(Toast.LENGTH_LONG);
+
+        //inflate view
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View custom_view = inflater.inflate(R.layout.toast_icon_text, null);
+        ((TextView) custom_view.findViewById(R.id.message)).setText(message);
+        ((ImageView) custom_view.findViewById(R.id.icon)).setImageResource(R.drawable.ic_close);
+        ((CardView) custom_view.findViewById(R.id.parent_view)).setCardBackgroundColor(context.getResources().getColor(R.color.red_600));
+
+        toast.setView(custom_view);
+        toast.show();
     }
 
 }

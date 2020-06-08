@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class WriteActivity extends AppCompatActivity implements View.OnClickListener {
-    private LinearLayout clickTimedate, clickCancel;
+    private ImageButton clickTimedate, clickCancel;
     private FloatingActionButton fab;
     private TextView displayTime, displayDate;
     private EditText editText;
@@ -62,8 +62,8 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void initView() {
-        clickTimedate = findViewById(R.id.editTimeDate);
-        clickCancel = findViewById(R.id.editCancel);
+        clickTimedate = findViewById(R.id.btnTimeDate);
+        clickCancel = findViewById(R.id.btnCancel);
         fab = findViewById(R.id.add_button);
         editText = findViewById(R.id.etWrite);
         displayTime = findViewById(R.id.tvTime);
@@ -73,7 +73,6 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
         clickCancel.setOnClickListener(this);
         fab.setOnClickListener(v -> {
             writeData();
-            Toast.makeText(this,"Data Added", Toast.LENGTH_SHORT).show();
             closeKeyboard();
         });
 
@@ -95,19 +94,25 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
     private void writeData() {
         RealmEngine realmEngine = RealmEngine.getInstance();
         String bodyFinal = editText.getText().toString();
-        if (!isEditMode) {
-            String time = getCurrentTimeDate(Tools.TIME_FORMAT);
-            String date = getCurrentTimeDate(Tools.DATE_FORMAT);
-            realmEngine.insertData(time, date, bodyFinal);
+        if (!bodyFinal.isEmpty()) {
+            if (!isEditMode) {
+                String time = getCurrentTimeDate(Tools.TIME_FORMAT);
+                String date = getCurrentTimeDate(Tools.DATE_FORMAT);
+                realmEngine.insertData(time, date, bodyFinal);
+            } else {
+                realmEngine.deleteData(timestamp);
+                realmEngine.addSpecificStory(
+                        new StoryData(
+                                time, date, bodyFinal, timestamp
+                        )
+                );
+            }
+            Log.d(TAG, "writeData: Modified Millis: " + Tools.generateMillis(date, time));
         } else {
-            realmEngine.deleteData(timestamp);
-            realmEngine.addSpecificStory(
-                    new StoryData(
-                            time, date, bodyFinal, timestamp
-                    )
-            );
+            String message = "Text field is empty";
+            tools.errorToast(this, message);
         }
-        Log.d(TAG, "writeData: Modified Millis: " + Tools.generateMillis(date, time));
+
     }
 
     private String getCurrentTimeDate(String timeOrDate) {
@@ -131,11 +136,13 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.editTimeDate:
+            case R.id.btnTimeDate:
                 Toast.makeText(this, "TimeDate Clicked", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.editCancel:
-                Toast.makeText(this,"Cancel CLicked",Toast.LENGTH_SHORT).show();
+            case R.id.btnCancel:
+                finish();
+                break;
+            default:
                 break;
         }
     }

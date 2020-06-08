@@ -79,20 +79,17 @@ tools:context=".Activities.WriteActivity">
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/editTimeDate"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:clickable="true"
-                android:focusable="true"
                 android:padding="5dp">
 
-                <ImageView
-                    android:id="@+id/map_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <ImageButton
+                    android:id="@+id/btnTimeDate"
+                    android:layout_width="?attr/actionBarSize"
+                    android:layout_height="?attr/actionBarSize"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:tint="@color/colorAccentLight"
                     app:srcCompat="@drawable/ic_clock_24dp" />
@@ -113,17 +110,16 @@ tools:context=".Activities.WriteActivity">
                 android:layout_height="0dp" />
 
             <LinearLayout
-                android:id="@+id/editCancel"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="5dp">
 
-                <ImageView
-                    android:id="@+id/list_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <ImageButton
+                    android:id="@+id/btnCancel"
+                    android:layout_width="?attr/actionBarSize"
+                    android:layout_height="?attr/actionBarSize"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:tint="@color/colorAccentLight"
                     app:srcCompat="@drawable/ic_clear_24dp"/>
