@@ -14,12 +14,24 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.BlendModeColorFilterCompat;
 import androidx.core.graphics.BlendModeCompat;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class Tools {
 
+    //KEYs for bundle stuffs
     public static final String TIME = "header";
+    public static final String TIMESTAMP = "timestamp";
     public static final String  BODY = "body";
     public static final String DATE = "date";
     public static final String POSITION = "pos";
+
+    //Time date format stuffs
+    public static final String TIME_FORMAT = "HH:mm a";
+    public static final String DATE_FORMAT = "MMMM dd";
+    public static final String DATEWITHDAY_FORMAT = "MMMM dd, EEEE";
+    public static final String WEEKDAY_FORMAT = "EEEE";
 
     private static Tools instance;
 
@@ -65,6 +77,19 @@ public class Tools {
                 .setNavigationBarColor(ContextCompat.getColor(activity.getApplication()
                                 .getApplicationContext(),
                         color));
+    }
+
+    public static long generateMillis(String date, String time) {
+        String myDate = date + " " + time;
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT + " " + TIME_FORMAT, Locale.getDefault());
+        try {
+            Date dateObj = sdf.parse(myDate);
+            long millis = dateObj.getTime();
+            return millis;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
 }

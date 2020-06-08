@@ -14,8 +14,7 @@ public class StoryData extends RealmObject {
     public StoryData() {
     }
 
-    public StoryData(String uniqueID, String time, String date, String body, long timestamp) {
-        this.uniqueID = uniqueID;
+    public StoryData(String time, String date, String body, long timestamp) {
         this.time = time;
         Date = date;
         this.body = body;
@@ -26,14 +25,6 @@ public class StoryData extends RealmObject {
         this.time = time;
         Date = date;
         this.body = body;
-    }
-
-    public String getUniqueID() {
-        return uniqueID;
-    }
-
-    public void setUniqueID(String uniqueID) {
-        this.uniqueID = uniqueID;
     }
 
     public String getTime() {

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.BlendModeColorFilterCompat;
 import androidx.core.graphics.BlendModeCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -45,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     private ExtendedFloatingActionButton efab;
     private MenuItem nightmode;
     private Tools tools = Tools.getInstance();
-    private Intent intent;
     private RealmEngine realmEngine;
     private RecyclerView recyclerView;
     private RealmResults<StoryData> realmResults;
@@ -88,13 +88,11 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         tools.setSystemBarColor(this, R.color.grey_5);
         tools.setSystemBarLight(this);
         tools.setNavigationBarColor(getWindow().getDecorView(),this,R.color.grey_3,true);
-
-        intent = new Intent(MainActivity.this,WriteActivity.class);
     }
 
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_menu);
+        toolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.drawable.ic_menu));
         toolbar.getNavigationIcon().setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
                 getResources().getColor(R.color.grey_80),
                 BlendModeCompat.SRC_ATOP));
@@ -210,22 +208,28 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         String date = story.get(i).getDate();
         String time = story.get(i).getTime();
         String body = story.get(i).getBody();
+        long timestamp = story.get(i).getTimestamp();
 
         Bundle args = new Bundle();
-        args.putString(Tools.BODY,body);
-        args.putString(Tools.DATE,date);
-        args.putString(Tools.TIME,time);
+        args.putString(Tools.BODY, body);
+        args.putString(Tools.DATE, date);
+        args.putString(Tools.TIME, time);
+        args.putLong(Tools.TIMESTAMP, timestamp);
         args.putInt(Tools.POSITION,i);
 
         return args;
     }
 
+    //Opens the editor with bundled data from selected item
     public void openEditor(int pos){
+        Intent intent = new Intent(MainActivity.this, WriteActivity.class);
         intent.putExtras(bundleData(pos));
-        openEditor();
+        startActivity(intent);
     }
 
+    //Only opens the editor
     public void openEditor(){
+        Intent intent = new Intent(MainActivity.this, WriteActivity.class);
         startActivity(intent);
     }
 
