@@ -82,7 +82,8 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
         tools.setNavigationBarColor(getWindow().getDecorView(),this, R.color.grey_3,true);
 
         if (isEditMode) {
-            displayDate.setText(date);
+            String fullDate = date + ", " + getCurrentTimeDate(Tools.WEEKDAY_FORMAT);
+            displayDate.setText(fullDate);
             displayTime.setText(time);
             editText.setText(body);
         } else {
