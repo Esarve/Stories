@@ -23,13 +23,9 @@ import java.util.Date;
 import java.util.Locale;
 
 public class WriteActivity extends AppCompatActivity implements View.OnClickListener {
-    private ImageButton clickTimedate, clickCancel;
-    private FloatingActionButton fab;
-    private TextView displayTime, displayDate;
     private EditText editText;
     private Tools tools = Tools.getInstance();
     private String time, date, body;
-    private int pos;
     private long timestamp;
     private String TAG = "Write";
     private boolean isEditMode = false;
@@ -40,14 +36,6 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_write);
         fetchData();
         initView();
-        initDataIfEdit();
-    }
-
-    private void initDataIfEdit() {
-        createLog(time);
-        createLog(date);
-        createLog(body);
-        createLog(String.valueOf(pos));
     }
 
     private void fetchData() {
@@ -57,17 +45,16 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
             date = getIntent().getExtras().getString(Tools.DATE);
             body = getIntent().getExtras().getString(Tools.BODY);
             timestamp = getIntent().getExtras().getLong(Tools.TIMESTAMP);
-            pos = getIntent().getExtras().getInt(Tools.POSITION);
         }
     }
 
     private void initView() {
-        clickTimedate = findViewById(R.id.btnTimeDate);
-        clickCancel = findViewById(R.id.btnCancel);
-        fab = findViewById(R.id.add_button);
+        ImageButton clickTimedate = findViewById(R.id.btnTimeDate);
+        ImageButton clickCancel = findViewById(R.id.btnCancel);
+        FloatingActionButton fab = findViewById(R.id.add_button);
         editText = findViewById(R.id.etWrite);
-        displayTime = findViewById(R.id.tvTime);
-        displayDate = findViewById(R.id.tvDate);
+        TextView displayTime = findViewById(R.id.tvTime);
+        TextView displayDate = findViewById(R.id.tvDate);
 
         clickTimedate.setOnClickListener(this);
         clickCancel.setOnClickListener(this);
@@ -121,9 +108,6 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
         return dateFormat.format(date);
     }
 
-    private void createLog(String text){
-        Log.d(TAG, "createLog: found "+ text);
-    }
     private void closeKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {

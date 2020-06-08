@@ -36,7 +36,7 @@ public class Tools {
     public static final String POSITION = "pos";
 
     //Time date format stuffs
-    public static final String TIME_FORMAT = "HH:mm a";
+    public static final String TIME_FORMAT = "H:mm a";
     public static final String DATE_FORMAT = "MMMM dd";
     public static final String DATEWITHDAY_FORMAT = "MMMM dd, EEEE";
     public static final String WEEKDAY_FORMAT = "EEEE";
@@ -92,8 +92,7 @@ public class Tools {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT + " " + TIME_FORMAT, Locale.getDefault());
         try {
             Date dateObj = sdf.parse(myDate);
-            long millis = dateObj.getTime();
-            return millis;
+            return dateObj.getTime();
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
@@ -103,14 +102,11 @@ public class Tools {
     public void errorToast(Context context, String message) {
         Toast toast = new Toast(context);
         toast.setDuration(Toast.LENGTH_LONG);
-
-        //inflate view
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View custom_view = inflater.inflate(R.layout.toast_icon_text, null);
         ((TextView) custom_view.findViewById(R.id.message)).setText(message);
         ((ImageView) custom_view.findViewById(R.id.icon)).setImageResource(R.drawable.ic_close);
         ((CardView) custom_view.findViewById(R.id.parent_view)).setCardBackgroundColor(context.getResources().getColor(R.color.red_600));
-
         toast.setView(custom_view);
         toast.show();
     }
