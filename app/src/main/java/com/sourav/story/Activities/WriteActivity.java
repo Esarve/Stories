@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sourav.story.R;
 import com.sourav.story.Stuffs.RealmEngine;
+import com.sourav.story.Stuffs.StoryData;
 import com.sourav.story.Stuffs.Tools;
 
 import java.text.DateFormat;
@@ -22,9 +23,6 @@ import java.util.Date;
 import java.util.Locale;
 
 public class WriteActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String TIME = "HH:mm a";
-    private static final String DATE = "MMMM dd";
-    private static final String DATEWITHDAY = "MMMM dd, EEEE";
     private LinearLayout clickTimedate, clickCancel;
     private FloatingActionButton fab;
     private TextView displayTime, displayDate;
@@ -32,7 +30,9 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
     private Tools tools = Tools.getInstance();
     private String time, date, body;
     private int pos;
+    private long timestamp;
     private String TAG = "Write";
+    private boolean isEditMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +52,12 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
 
     private void fetchData() {
         if (getIntent().getExtras()!=null){
-            time = getIntent().getExtras().getString(Tools.TIME, "-");
-            date = getIntent().getExtras().getString(Tools.DATE, "-");
-            body = getIntent().getExtras().getString(Tools.BODY,"-");
-            pos = getIntent().getExtras().getInt(Tools.POSITION,0);
+            isEditMode = true;
+            time = getIntent().getExtras().getString(Tools.TIME);
+            date = getIntent().getExtras().getString(Tools.DATE);
+            body = getIntent().getExtras().getString(Tools.BODY);
+            timestamp = getIntent().getExtras().getLong(Tools.TIMESTAMP);
+            pos = getIntent().getExtras().getInt(Tools.POSITION);
         }
     }
 
@@ -79,21 +81,32 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
         tools.setSystemBarLight(this);
         tools.setNavigationBarColor(getWindow().getDecorView(),this, R.color.grey_3,true);
 
-        displayDate.setText(getCurrentTimeDate(DATEWITHDAY));
-        displayTime.setText(getCurrentTimeDate(TIME));
-/*
-        Log.d(TAG, "initView: Current Time "+ getCurrentTimeDate(TIME));
-        Log.d(TAG, "initView: Current date "+ getCurrentTimeDate(DATE));*/
-
+        if (isEditMode) {
+            displayDate.setText(date);
+            displayTime.setText(time);
+            editText.setText(body);
+        } else {
+            displayDate.setText(getCurrentTimeDate(Tools.DATEWITHDAY_FORMAT));
+            displayTime.setText(getCurrentTimeDate(Tools.TIME_FORMAT));
+        }
     }
 
     private void writeData() {
         RealmEngine realmEngine = RealmEngine.getInstance();
-        String body = editText.getText().toString();
-        String time = getCurrentTimeDate(TIME);
-        String date = getCurrentTimeDate(DATE);
-        realmEngine.insertData(time,date,body);
-
+        String bodyFinal = editText.getText().toString();
+        if (!isEditMode) {
+            String time = getCurrentTimeDate(Tools.TIME_FORMAT);
+            String date = getCurrentTimeDate(Tools.DATE_FORMAT);
+            realmEngine.insertData(time, date, bodyFinal);
+        } else {
+            realmEngine.deleteData(timestamp);
+            realmEngine.addSpecificStory(
+                    new StoryData(
+                            time, date, bodyFinal, timestamp
+                    )
+            );
+        }
+        Log.d(TAG, "writeData: Modified Millis: " + Tools.generateMillis(date, time));
     }
 
     private String getCurrentTimeDate(String timeOrDate) {
