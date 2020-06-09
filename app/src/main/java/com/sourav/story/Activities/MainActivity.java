@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     //Deletes an item and shows toast
     private void performDelete(int pos) {
         long timestamp = story.get(pos).getTimestamp();
-        StoryData deletecStory = realmEngine.getSpecificData(timestamp);
+        StoryData deletecStory = realmEngine.getSpecificData(timestamp);  //Saves the entry about to be deleted
         realmEngine.deleteData(timestamp);
         recyclerView.removeViewAt(pos);
         showSnack(deletecStory);
@@ -181,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         Snackbar snackbar = Snackbar
                 .make(parent, "Deleted Successfully!", Snackbar.LENGTH_LONG)
                 .setAction("UNDO", view -> {
+                    //adds the previously deleted entry
                     realmEngine.addSpecificStory(deletedStory);
                     Toast.makeText(this, "UNDO huhuhahah", Toast.LENGTH_SHORT).show();
                 });
