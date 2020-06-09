@@ -22,6 +22,8 @@ import androidx.core.graphics.BlendModeCompat;
 
 import com.sourav.story.R;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -87,6 +89,7 @@ public class Tools {
                         color));
     }
 
+    //Converts date & time in millis
     public static long generateMillis(String date, String time) {
         String myDate = date + " " + time;
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT + " " + TIME_FORMAT, Locale.getDefault());
@@ -99,6 +102,7 @@ public class Tools {
         }
     }
 
+    //Shows custom error toast
     public void errorToast(Context context, String message) {
         Toast toast = new Toast(context);
         toast.setDuration(Toast.LENGTH_LONG);
@@ -111,4 +115,22 @@ public class Tools {
         toast.show();
     }
 
+    //Gets current date and time
+    public String getCurrentTimeDate(String timeOrDate) {
+        DateFormat dateFormat = new SimpleDateFormat(timeOrDate, Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
+    public String getDayOfWeekFromDate(String date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
+        SimpleDateFormat simpleDateFormatForWeekDay = new SimpleDateFormat(WEEKDAY_FORMAT, Locale.getDefault());
+        try {
+            Date obj = simpleDateFormat.parse(date);
+            if (obj != null) return simpleDateFormatForWeekDay.format(obj);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 }

@@ -17,15 +17,11 @@ import com.sourav.story.Stuffs.RealmEngine;
 import com.sourav.story.Stuffs.StoryData;
 import com.sourav.story.Stuffs.Tools;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 public class WriteActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText editText;
     private Tools tools = Tools.getInstance();
-    private String time, date, body;
+    private String ediTime, editDate, editBody,
+            entryTime, entryDate, entryWeekDay;
     private long timestamp;
     private String TAG = "Write";
     private boolean isEditMode = false;
@@ -39,13 +35,17 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void fetchData() {
-        if (getIntent().getExtras()!=null){
+        if (getIntent().getExtras() != null) {
             isEditMode = true;
-            time = getIntent().getExtras().getString(Tools.TIME);
-            date = getIntent().getExtras().getString(Tools.DATE);
-            body = getIntent().getExtras().getString(Tools.BODY);
+            ediTime = getIntent().getExtras().getString(Tools.TIME);
+            editDate = getIntent().getExtras().getString(Tools.DATE);
+            editBody = getIntent().getExtras().getString(Tools.BODY);
             timestamp = getIntent().getExtras().getLong(Tools.TIMESTAMP);
         }
+        entryTime = tools.getCurrentTimeDate(Tools.TIME_FORMAT);
+        entryDate = tools.getCurrentTimeDate(Tools.DATE_FORMAT);
+        entryWeekDay = tools.getCurrentTimeDate(Tools.WEEKDAY_FORMAT);
+
     }
 
     private void initView() {
@@ -68,13 +68,14 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
         tools.setNavigationBarColor(getWindow().getDecorView(),this, R.color.grey_3,true);
 
         if (isEditMode) {
-            String fullDate = date + ", " + getCurrentTimeDate(Tools.WEEKDAY_FORMAT);
+            String fullDate = editDate + ", " + tools.getDayOfWeekFromDate(editDate);
             displayDate.setText(fullDate);
-            displayTime.setText(time);
-            editText.setText(body);
+            displayTime.setText(ediTime);
+            editText.setText(editBody);
         } else {
-            displayDate.setText(getCurrentTimeDate(Tools.DATEWITHDAY_FORMAT));
-            displayTime.setText(getCurrentTimeDate(Tools.TIME_FORMAT));
+            String fullDate = entryDate + ", " + entryWeekDay;
+            displayDate.setText(fullDate);
+            displayTime.setText(entryTime);
         }
     }
 
@@ -83,29 +84,21 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
         String bodyFinal = editText.getText().toString();
         if (!bodyFinal.isEmpty()) {
             if (!isEditMode) {
-                String time = getCurrentTimeDate(Tools.TIME_FORMAT);
-                String date = getCurrentTimeDate(Tools.DATE_FORMAT);
-                realmEngine.insertData(time, date, bodyFinal);
+                realmEngine.insertData(entryTime, entryDate, bodyFinal);
             } else {
                 realmEngine.deleteData(timestamp);
                 realmEngine.addSpecificStory(
                         new StoryData(
-                                time, date, bodyFinal, timestamp
+                                ediTime, editDate, bodyFinal, timestamp
                         )
                 );
             }
-            Log.d(TAG, "writeData: Modified Millis: " + Tools.generateMillis(date, time));
+            Log.d(TAG, "writeData: Modified Millis: " + Tools.generateMillis(editDate, ediTime));
         } else {
             String message = "Text field is empty";
             tools.errorToast(this, message);
         }
 
-    }
-
-    private String getCurrentTimeDate(String timeOrDate) {
-        DateFormat dateFormat = new SimpleDateFormat(timeOrDate, Locale.getDefault());
-        Date date = new Date();
-        return dateFormat.format(date);
     }
 
     private void closeKeyboard() {
