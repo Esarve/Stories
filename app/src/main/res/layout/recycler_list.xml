@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="01 Jan 2001"
-                android:textSize="18sp"
+                android:textSize="24sp"
                 android:textStyle="bold"/>
 
             <TextView
@@ -38,7 +38,7 @@
                 android:layout_below="@+id/listDate"
                 android:layout_marginTop="4dp"
                 android:fontFamily="sans-serif"
-                android:maxLines="1"
+                android:maxLines="3"
                 android:text="Bla bla bla bla bla bla bla"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 android:textSize="20sp"/>
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/listBody"
                 android:layout_alignParentEnd="true"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:text="10:10 PM"/>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
