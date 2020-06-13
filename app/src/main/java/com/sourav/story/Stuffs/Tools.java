@@ -81,12 +81,12 @@ public class Tools {
         int flags = view.getSystemUiVisibility();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && isLightMode) {
             flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            view.setSystemUiVisibility(flags);
+            activity.getWindow()
+                    .setNavigationBarColor(ContextCompat.getColor(activity.getApplication()
+                                    .getApplicationContext(),
+                            color));
         }
-        view.setSystemUiVisibility(flags);
-        activity.getWindow()
-                .setNavigationBarColor(ContextCompat.getColor(activity.getApplication()
-                                .getApplicationContext(),
-                        color));
     }
 
     //Converts date & time in millis

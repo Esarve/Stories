@@ -25,6 +25,7 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
     private long timestamp;
     private String TAG = "Write";
     private boolean isEditMode = false;
+    private String prev = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,10 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
         clickTimedate.setOnClickListener(this);
         clickCancel.setOnClickListener(this);
         fab.setOnClickListener(v -> {
-            writeData();
+            if (isDuplicate()){
+                writeData();
+            }else
+                tools.errorToast(this,"You have already entered the same story!");
             closeKeyboard();
         });
 
@@ -77,6 +81,13 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
             displayDate.setText(fullDate);
             displayTime.setText(entryTime);
         }
+    }
+
+    private boolean isDuplicate() {
+        boolean result;
+        result = prev.equalsIgnoreCase(editText.getText().toString());
+        prev = editText.getText().toString();
+        return !result;
     }
 
     private void writeData() {
