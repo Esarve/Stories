@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (tools.getFromSharedPref(this, Tools.PREFTYPE_NAME, Tools.USERNAME) == null){
+            openSetupWizard();
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initRealm();
@@ -61,6 +64,10 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         initView();
         initData();
         initRecyclerView();
+    }
+
+    private void openSetupWizard() {
+        startActivity(new Intent(MainActivity.this, WizardActivity.class));
     }
 
     private void initData() {
@@ -105,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     private void initRecyclerView() {
         recyclerView = findViewById(R.id.recyclerView);
         newAdapter = new NewAdapter(this, story);
-        headerAdapter = new HeaderAdapter("Hi Sourav", realmResults.size(), this);
+        headerAdapter = new HeaderAdapter(tools.getFromSharedPref(this,Tools.PREFTYPE_NAME, Tools.USERNAME), realmResults.size(), this);
         MergeAdapter mergeAdapter = new MergeAdapter(headerAdapter, newAdapter);
         recyclerView.setAdapter(mergeAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

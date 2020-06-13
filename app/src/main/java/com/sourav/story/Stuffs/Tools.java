@@ -2,6 +2,7 @@ package com.sourav.story.Stuffs;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -42,6 +43,10 @@ public class Tools {
     public static final String DATE_FORMAT = "MMMM dd";
     public static final String DATEWITHDAY_FORMAT = "MMMM dd, EEEE";
     public static final String WEEKDAY_FORMAT = "EEEE";
+
+    public static final String USERNAME = "name";
+    public static final String PREFTYPE_NAME = "namepref";
+
 
     private static Tools instance;
 
@@ -133,4 +138,17 @@ public class Tools {
         }
         return "";
     }
+
+    public void saveToSharedPref(Context context, String prefType, String key, String value){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(prefType, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
+
+    public String getFromSharedPref(Context context, String prefType, String key){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(prefType, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(key, null);
+    }
+
 }
