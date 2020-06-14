@@ -3,6 +3,7 @@ package com.sourav.story.Activities;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -126,7 +127,16 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                performDelete(viewHolder.getLayoutPosition() - 1);
+                switch (direction){
+                    case ItemTouchHelper.RIGHT:
+                        openEditor(viewHolder.getLayoutPosition() - 1);
+                        Log.d(TAG, "onSwiped: Swiped Right");
+                        break;
+                    case ItemTouchHelper.LEFT:
+                        Log.d(TAG, "onSwiped: Swiped left");
+                        performDelete(viewHolder.getLayoutPosition() - 1);
+                        break;
+                }
             }
 
             @Override
@@ -135,10 +145,11 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
                                     float dX, float dY, int actionState, boolean isCurrentlyActive) {
 
                 new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                        .addActionIcon(R.drawable.ic_delete_white_24dp)
+                        .addSwipeLeftActionIcon(R.drawable.ic_outline_delete_24)
+                        .addSwipeRightActionIcon(R.drawable.ic_outline_edit_24)
                         .setActionIconTint(R.color.colorAccent)
-                        .addSwipeRightLabel("delete")
-                        .addSwipeLeftLabel("delete")
+                        .addSwipeRightLabel("Edit")
+                        .addSwipeLeftLabel("Delete")
                         .create()
                         .decorate();
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
