@@ -62,6 +62,7 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
         fab.setOnClickListener(v -> {
             if (isDuplicate()){
                 writeData();
+                finish();
             }else
                 tools.errorToast(this,"You have already entered the same story!");
             closeKeyboard();
