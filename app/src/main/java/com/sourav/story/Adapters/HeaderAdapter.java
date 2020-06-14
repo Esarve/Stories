@@ -32,7 +32,8 @@ public class HeaderAdapter extends RecyclerView.Adapter<HeaderAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         String headerText = "You currently have " + count + " entries";
-        viewHolder.name.setText(headerName);
+        String displayName = "Hi "+ headerName;
+        viewHolder.name.setText(displayName);
         viewHolder.body.setText(headerText);
     }
 
