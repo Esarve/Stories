@@ -81,6 +81,7 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
             displayDate.setText(fullDate);
             displayTime.setText(entryTime);
         }
+        editText.requestFocus();
     }
 
     private boolean isDuplicate() {
