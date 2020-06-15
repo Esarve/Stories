@@ -2,6 +2,7 @@ package com.sourav.story.Stuffs;
 
 import java.util.Objects;
 
+import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
@@ -55,8 +56,16 @@ public class RealmEngine {
         });
     }
 
-    public RealmResults<StoryData> getResults(){
+    public RealmResults<StoryData> getSearchResults(){
         return realm.where(StoryData.class).sort("timestamp", Sort.DESCENDING).findAll();
+    }
+
+    public RealmResults<StoryData> getSearchResults(String query){
+        return realm.where(StoryData.class)
+                .contains("body", query, Case.INSENSITIVE)
+                .or()
+                .contains("Date", query,Case.INSENSITIVE)
+                .sort("timestamp", Sort.DESCENDING).findAll();
     }
 
 }
