@@ -1,7 +1,9 @@
 package com.sourav.story.OtherKindsOfViews;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +18,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.sourav.story.Interfaces.OnBottomSheetClickListner;
 import com.sourav.story.R;
 import com.sourav.story.Stuffs.Tools;
-
-import java.util.zip.Inflater;
 
 public class BottomSheetViewer extends BottomSheetDialogFragment {
     private OnBottomSheetClickListner clickListener;
@@ -63,8 +63,12 @@ public class BottomSheetViewer extends BottomSheetDialogFragment {
 
     private void initData() {
         String header = date + " " +time;
-        tvBody.setText(body);
         tvHeader.setText(header);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            tvBody.setText(Html.fromHtml(body, Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            tvBody.setText(Html.fromHtml(body));
+        }
     }
 
     @Override

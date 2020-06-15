@@ -8,6 +8,7 @@ import io.realm.RealmResults;
 import io.realm.Sort;
 
 public class RealmEngine {
+
     public static RealmEngine instance;
     private Realm realm;
 
@@ -28,19 +29,16 @@ public class RealmEngine {
     }
 
     public void insertData(String time, String date, String body){
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                StoryData story = realm.createObject(StoryData.class, System.currentTimeMillis());
-                story.setTime(time);
-                story.setDate(date);
-                story.setBody(body);
-            }
+        realm.executeTransactionAsync(realm -> {
+            StoryData story = realm.createObject(StoryData.class, System.currentTimeMillis());
+            story.setTime(time);
+            story.setDate(date);
+            story.setBody(body);
         });
     }
 
     public void deleteData(long timestamp) {
-        realm.executeTransaction(realm -> {
+        realm.executeTransactionAsync(realm -> {
             RealmResults<StoryData> realmResults = realm.where(StoryData.class).equalTo("timestamp", timestamp).findAll();
             realmResults.deleteAllFromRealm();
         });
@@ -52,11 +50,10 @@ public class RealmEngine {
     }
 
     public void addSpecificStory(StoryData deletedStory) {
-        realm.executeTransaction(realm -> {
+        realm.executeTransactionAsync(realm -> {
             realm.insert(deletedStory);
         });
     }
-
 
     public RealmResults<StoryData> getResults(){
         return realm.where(StoryData.class).sort("timestamp", Sort.DESCENDING).findAll();

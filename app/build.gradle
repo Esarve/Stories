@@ -46,4 +46,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0-rc01"
     //RecyclerView Swipe
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.2'
+    //Rich Text
+    implementation 'jp.wasabeef:richeditor-android:1.2.2'
+    implementation 'org.jsoup:jsoup:1.11.3'
 }

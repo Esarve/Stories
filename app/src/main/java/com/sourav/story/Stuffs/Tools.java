@@ -23,6 +23,9 @@ import androidx.core.graphics.BlendModeCompat;
 
 import com.sourav.story.R;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,6 +59,7 @@ public class Tools {
         return instance;
     }
 
+    //Systembar, navigationbar stuffs
     public void setSystemBarColor(Activity act, @ColorRes int color) {
         Window window = act.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -139,6 +143,7 @@ public class Tools {
         return "";
     }
 
+    //saves value into shared preference
     public void saveToSharedPref(Context context, String prefType, String key, String value){
         SharedPreferences sharedPreferences = context.getSharedPreferences(prefType, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -146,9 +151,16 @@ public class Tools {
         editor.apply();
     }
 
+    //gets value from shared preference
     public String getFromSharedPref(Context context, String prefType, String key){
         SharedPreferences sharedPreferences = context.getSharedPreferences(prefType, Context.MODE_PRIVATE);
         return sharedPreferences.getString(key, null);
+    }
+
+    //converts formatted text into plain text
+    public String getPlainText(String html){
+        Document doc = Jsoup.parse(html);
+        return doc.body().text();
     }
 
 }
