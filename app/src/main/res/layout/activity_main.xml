@@ -43,7 +43,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/grey_3"
         app:backgroundTint="@color/colorAccentLight"
-        app:icon="@drawable/ic_create_black_24dp"
+        app:icon="@drawable/ic_outline_edit_24"
         app:iconTint="@color/grey_3"
         app:tint="@color/grey_10" />
 
