@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
@@ -41,7 +42,7 @@ import io.realm.RealmResults;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class MainActivity extends AppCompatActivity implements OnRVClickListner, OnBottomSheetClickListner, View.OnClickListener {
-    private static final String TAG = "Main Activity" ;
+    private static final String TAG = "MainActivity" ;
     private CoordinatorLayout parent;
     private List<StoryData> story = new ArrayList<>();
     private ExtendedFloatingActionButton efab;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     private RealmResults<StoryData> realmResults;
     private NewAdapter newAdapter;
     private HeaderAdapter headerAdapter;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,14 +74,24 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     }
 
     private void initData() {
-        story = realmEngine.getResults();
+        story = realmEngine.getSearchResults();
     }
+
+    private void initData(String query) {
+        story = realmEngine.getSearchResults(query);
+        refresh();
+    }
+
+    private void refresh() {
+        initRecyclerView();
+    }
+
 
     private void initRealm() {
         Realm.init(this);
         realmEngine = RealmEngine.getInstance();
         realmEngine.initRealm();
-        realmResults = realmEngine.getResults();
+        realmResults = realmEngine.getSearchResults();
 
         realmResults.addChangeListener(storyData -> {
             initData();
@@ -218,7 +230,20 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
             Toast.makeText(getApplicationContext(),"NIGHT MODE: WIP", Toast.LENGTH_SHORT).show();
             return false;
         });
-        //SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText){
+                Log.d(TAG, "onQueryTextChange: "+ newText);
+                initData(newText);
+                return false;
+            }
+        });
         return true;
     }
 
@@ -237,6 +262,15 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         args.putInt(Tools.POSITION,i);
 
         return args;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     //Opens the editor with bundled data from selected item
