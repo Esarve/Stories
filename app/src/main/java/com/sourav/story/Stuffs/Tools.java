@@ -23,6 +23,9 @@ import androidx.core.graphics.BlendModeCompat;
 
 import com.sourav.story.R;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -149,6 +152,11 @@ public class Tools {
     public String getFromSharedPref(Context context, String prefType, String key){
         SharedPreferences sharedPreferences = context.getSharedPreferences(prefType, Context.MODE_PRIVATE);
         return sharedPreferences.getString(key, null);
+    }
+
+    public String getPlainText(String html){
+        Document doc = Jsoup.parse(html);
+        return doc.body().text();
     }
 
 }

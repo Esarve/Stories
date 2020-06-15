@@ -1,13 +1,14 @@
 package com.sourav.story.Activities;
 
+import android.content.Context;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,8 +18,10 @@ import com.sourav.story.Stuffs.RealmEngine;
 import com.sourav.story.Stuffs.StoryData;
 import com.sourav.story.Stuffs.Tools;
 
+import jp.wasabeef.richeditor.RichEditor;
+
 public class WriteActivity extends AppCompatActivity implements View.OnClickListener {
-    private EditText editText;
+    private RichEditor editText;
     private Tools tools = Tools.getInstance();
     private String ediTime, editDate, editBody,
             entryTime, entryDate, entryWeekDay;
@@ -26,6 +29,8 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
     private String TAG = "Write";
     private boolean isEditMode = false;
     private String prev = "";
+    private ImageButton ibBold, ibItalic, ibUnderline, ibBullet;
+    private boolean selectBold, selectItalic, selectUnderline, selectBullet = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +55,38 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void initView() {
-        ImageButton clickTimedate = findViewById(R.id.btnTimeDate);
-        ImageButton clickCancel = findViewById(R.id.btnCancel);
         FloatingActionButton fab = findViewById(R.id.add_button);
-        editText = findViewById(R.id.etWrite);
         TextView displayTime = findViewById(R.id.tvTime);
         TextView displayDate = findViewById(R.id.tvDate);
+        editText = findViewById(R.id.etWrite);
+        editText. setPadding(16,16,16,16);
+        editText.focusEditor();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            editText.setFocusedByDefault(true);
+        }
+        ibBold = findViewById(R.id.action_bold);
+        ibItalic = findViewById(R.id.action_italic);
+        ibUnderline = findViewById(R.id.action_underline);
+        ibBullet = findViewById(R.id.action_bullet);
 
-        clickTimedate.setOnClickListener(this);
-        clickCancel.setOnClickListener(this);
+        ibBold.setOnClickListener(v -> {
+            editText.setBold();
+            setSelected(ibBold);
+        });
+
+        ibItalic.setOnClickListener(v -> {
+            editText.setItalic();
+            setSelected(ibItalic);
+        });
+        ibUnderline.setOnClickListener(v -> {
+            editText.setUnderline();
+            setSelected(ibUnderline);
+        });
+        ibBullet.setOnClickListener(v -> {
+            editText.setBullets();
+            setSelected(ibBullet);
+        });
+
         fab.setOnClickListener(v -> {
             if (isDuplicate()){
                 writeData();
@@ -76,25 +104,33 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
             String fullDate = editDate + ", " + tools.getDayOfWeekFromDate(editDate);
             displayDate.setText(fullDate);
             displayTime.setText(ediTime);
-            editText.setText(editBody);
+            editText.setHtml(editBody);
         } else {
             String fullDate = entryDate + ", " + entryWeekDay;
             displayDate.setText(fullDate);
             displayTime.setText(entryTime);
         }
-        editText.requestFocus();
+
+        editText.setOnInitialLoadListener(isReady -> {
+            if (isReady) {
+                editText.focusEditor();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.SHOW_IMPLICIT, 0);
+            }
+        });
+
     }
 
     private boolean isDuplicate() {
         boolean result;
-        result = prev.equalsIgnoreCase(editText.getText().toString());
-        prev = editText.getText().toString();
+        result = prev.equalsIgnoreCase(tools.getPlainText(editText.getHtml()));
+        prev = tools.getPlainText(editText.getHtml());
         return !result;
     }
 
     private void writeData() {
         RealmEngine realmEngine = RealmEngine.getInstance();
-        String bodyFinal = editText.getText().toString();
+        String bodyFinal = editText.getHtml();
         if (!bodyFinal.isEmpty()) {
             if (!isEditMode) {
                 realmEngine.insertData(entryTime, entryDate, bodyFinal);
@@ -123,16 +159,64 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    private void setSelected(ImageButton imageButton){
+        switch (imageButton.getId()) {
+            case R.id.action_bold:
+                if (selectBold){
+                    removefilter(imageButton);
+                    selectBold = false;
+                }else{
+                    setFilter(imageButton);
+                    selectBold = true;
+                }
+                break;
+            case R.id.action_italic:
+                if (selectItalic){
+                    removefilter(imageButton);
+                    selectItalic = false;
+                }else{
+                    setFilter(imageButton);
+                    selectItalic = true;
+                }
+                break;
+            case R.id.action_underline:
+                if (selectUnderline){
+                    removefilter(imageButton);
+                    selectUnderline = false;
+                }else{
+                    setFilter(imageButton);
+                    selectUnderline = true;
+                }
+                break;
+            case R.id.action_bullet:
+                if (selectBullet){
+                    removefilter(imageButton);
+                    selectBullet = false;
+                }else{
+                    setFilter(imageButton);
+                    selectBullet = true;
+                }
+                break;
+        }
+    }
+
+    private void setFilter(ImageButton imageButton){
+        imageButton.getBackground().setColorFilter(getResources().getColor(R.color.grey_10), PorterDuff.Mode.SRC_ATOP);
+        imageButton.invalidate();
+    }
+
+    private void removefilter(ImageButton imageButton){
+        imageButton.getBackground().clearColorFilter();
+        imageButton.invalidate();
+    }
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.btnTimeDate:
-                Toast.makeText(this, "TimeDate Clicked", Toast.LENGTH_SHORT).show();
+            case R.id.action_clock:
                 break;
-            case R.id.btnCancel:
-                finish();
-                break;
-            default:
+            case R.id.action_calender:
                 break;
         }
     }

@@ -49,103 +49,23 @@ tools:context=".Activities.WriteActivity">
         </androidx.cardview.widget.CardView>
 
 
-        <EditText
+        <jp.wasabeef.richeditor.RichEditor
             android:id="@+id/etWrite"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:gravity="top"
-            android:hint="Write Something..."
-            android:paddingStart="16dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="16dp"/>
+            android:layout_height="match_parent"/>
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/bottomBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <include layout="@layout/richtexttoolbar"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="@drawable/bg_gradient_soft" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@android:color/white"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-                <ImageButton
-                    android:id="@+id/btnTimeDate"
-                    android:layout_width="?attr/actionBarSize"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:tint="@color/colorAccentLight"
-                    app:srcCompat="@drawable/ic_clock_24dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="2"
-                    android:layout_marginStart="2dp"
-                    android:text="Time / Date"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="?attr/actionBarSize"
-                android:layout_height="0dp" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="5dp">
-
-                <ImageButton
-                    android:id="@+id/btnCancel"
-                    android:layout_width="?attr/actionBarSize"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:tint="@color/colorAccentLight"
-                    app:srcCompat="@drawable/ic_clear_24dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cancel"
-                    android:layout_marginStart="2dp"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:textStyle="bold"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
         android:layout_marginBottom="15dp"
         app:backgroundTint="@color/colorAccentLight"
         app:tint="@android:color/white"
