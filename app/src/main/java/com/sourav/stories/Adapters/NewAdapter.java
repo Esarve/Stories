@@ -1,4 +1,4 @@
-package com.sourav.story.Adapters;
+package com.sourav.stories.Adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,10 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sourav.story.Interfaces.OnRVClickListner;
-import com.sourav.story.R;
-import com.sourav.story.Stuffs.StoryData;
-import com.sourav.story.Stuffs.Tools;
+import com.sourav.stories.Interfaces.OnRVClickListner;
+import com.sourav.stories.R;
+import com.sourav.stories.Stuffs.StoryData;
+import com.sourav.stories.Stuffs.Tools;
 
 import java.util.List;
 

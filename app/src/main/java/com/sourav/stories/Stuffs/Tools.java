@@ -1,4 +1,4 @@
-package com.sourav.story.Stuffs;
+package com.sourav.stories.Stuffs;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,7 +21,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.BlendModeColorFilterCompat;
 import androidx.core.graphics.BlendModeCompat;
 
-import com.sourav.story.R;
+import com.sourav.stories.R;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

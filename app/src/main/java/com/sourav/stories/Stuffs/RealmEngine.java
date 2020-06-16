@@ -1,4 +1,4 @@
-package com.sourav.story.Stuffs;
+package com.sourav.stories.Stuffs;
 
 import java.util.Objects;
 

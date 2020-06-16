@@ -1,4 +1,4 @@
-package com.sourav.story.Adapters;
+package com.sourav.stories.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sourav.story.R;
+import com.sourav.stories.R;
 
 public class HeaderAdapter extends RecyclerView.Adapter<HeaderAdapter.ViewHolder> {
     private String headerName;

@@ -1,4 +1,4 @@
-package com.sourav.story.Activities;
+package com.sourav.stories.Activities;
 
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -24,15 +24,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.sourav.story.Adapters.HeaderAdapter;
-import com.sourav.story.Adapters.NewAdapter;
-import com.sourav.story.Interfaces.OnBottomSheetClickListner;
-import com.sourav.story.Interfaces.OnRVClickListner;
-import com.sourav.story.OtherKindsOfViews.BottomSheetViewer;
-import com.sourav.story.R;
-import com.sourav.story.Stuffs.RealmEngine;
-import com.sourav.story.Stuffs.StoryData;
-import com.sourav.story.Stuffs.Tools;
+import com.sourav.stories.Adapters.HeaderAdapter;
+import com.sourav.stories.Adapters.NewAdapter;
+import com.sourav.stories.Interfaces.OnBottomSheetClickListner;
+import com.sourav.stories.Interfaces.OnRVClickListner;
+import com.sourav.stories.OtherKindsOfViews.BottomSheetViewer;
+import com.sourav.stories.R;
+import com.sourav.stories.Stuffs.RealmEngine;
+import com.sourav.stories.Stuffs.StoryData;
+import com.sourav.stories.Stuffs.Tools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         Realm.init(this);
         realmEngine = RealmEngine.getInstance();
         realmEngine.initRealm();
-        realmResults = realmEngine.getSearchResults();
+        realmResults = realmEngine.getSearchResults(); //todo: FIX THIS
 
         realmResults.addChangeListener(storyData -> {
             initData();
