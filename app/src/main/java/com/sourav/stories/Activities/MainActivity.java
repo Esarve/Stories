@@ -10,13 +10,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.BlendModeColorFilterCompat;
-import androidx.core.graphics.BlendModeCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.MergeAdapter;
@@ -36,6 +34,7 @@ import com.sourav.stories.Stuffs.Tools;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -112,14 +111,9 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
 
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.drawable.ic_menu));
-        toolbar.getNavigationIcon().setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
-                getResources().getColor(R.color.grey_80),
-                BlendModeCompat.SRC_ATOP));
         toolbar.setTitleTextColor(getResources().getColor(R.color.grey_80));
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getTitle());
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
     }
 
     private void initRecyclerView() {
