@@ -24,7 +24,7 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
     private RichEditor editText;
     private Tools tools = Tools.getInstance();
     private String ediTime, editDate, editBody,
-            entryTime, entryDate, entryWeekDay;
+            entryTime, entryDate, entryWeekDay, uid;
     private long timestamp;
     private String TAG = "Write";
     private boolean isEditMode = false;
@@ -47,6 +47,7 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
             editDate = getIntent().getExtras().getString(Tools.DATE);
             editBody = getIntent().getExtras().getString(Tools.BODY);
             timestamp = getIntent().getExtras().getLong(Tools.TIMESTAMP);
+            uid = getIntent().getExtras().getString(Tools.UID);
         }
         entryTime = tools.getCurrentTimeDate(Tools.TIME_FORMAT);
         entryDate = tools.getCurrentTimeDate(Tools.DATE_FORMAT);
@@ -135,10 +136,10 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
             if (!isEditMode) {
                 realmEngine.insertData(entryTime, entryDate, bodyFinal);
             } else {
-                realmEngine.deleteData(timestamp);
+                realmEngine.deleteData(uid);
                 realmEngine.addSpecificStory(
                         new StoryData(
-                                ediTime, editDate, bodyFinal, timestamp
+                                ediTime, editDate, bodyFinal, timestamp, uid
                         )
                 );
             }

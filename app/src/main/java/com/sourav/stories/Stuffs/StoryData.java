@@ -4,21 +4,22 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class StoryData extends RealmObject {
+    @PrimaryKey
     private String uniqueID;
     private String time;
     private String Date;
     private String body;
-    @PrimaryKey
     private long timestamp;
 
     public StoryData() {
     }
 
-    public StoryData(String time, String date, String body, long timestamp) {
+    public StoryData(String time, String date, String body, long timestamp, String uid) {
         this.time = time;
         Date = date;
         this.body = body;
         this.timestamp = timestamp;
+        uniqueID = uid;
     }
 
     public StoryData(String time, String date, String body) {
@@ -57,5 +58,13 @@ public class StoryData extends RealmObject {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getUniqueID() {
+        return uniqueID;
+    }
+
+    public void setUniqueID(String uniqueID) {
+        this.uniqueID = uniqueID;
     }
 }

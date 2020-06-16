@@ -40,6 +40,7 @@ public class Tools {
     public static final String  BODY = "body";
     public static final String DATE = "date";
     public static final String POSITION = "pos";
+    public static final String UID = "uid";
 
     //Time date format stuffs
     public static final String TIME_FORMAT = "hh:mm a";

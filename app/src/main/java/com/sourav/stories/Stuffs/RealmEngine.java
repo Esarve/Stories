@@ -1,6 +1,7 @@
 package com.sourav.stories.Stuffs;
 
 import java.util.Objects;
+import java.util.UUID;
 
 import io.realm.Case;
 import io.realm.Realm;
@@ -31,23 +32,24 @@ public class RealmEngine {
 
     public void insertData(String time, String date, String body){
         realm.executeTransactionAsync(realm -> {
-            StoryData story = realm.createObject(StoryData.class, System.currentTimeMillis());
+            StoryData story = realm.createObject(StoryData.class, generateUUID());
+            story.setTimestamp(System.currentTimeMillis());
             story.setTime(time);
             story.setDate(date);
             story.setBody(body);
         });
     }
 
-    public void deleteData(long timestamp) {
+    public void deleteData(String uid) {
         realm.executeTransactionAsync(realm -> {
-            RealmResults<StoryData> realmResults = realm.where(StoryData.class).equalTo("timestamp", timestamp).findAll();
+            RealmResults<StoryData> realmResults = realm.where(StoryData.class).equalTo("uniqueID", uid).findAll();
             realmResults.deleteAllFromRealm();
         });
     }
 
-    public StoryData getSpecificData(long timestamp) {
+    public StoryData getSpecificData(String uid) {
         return realm.copyFromRealm(Objects.requireNonNull(
-                realm.where(StoryData.class).equalTo("timestamp", timestamp).findFirst()));
+                realm.where(StoryData.class).equalTo("uniqueID", uid).findFirst()));
     }
 
     public void addSpecificStory(StoryData deletedStory) {
@@ -66,6 +68,10 @@ public class RealmEngine {
                 .or()
                 .contains("Date", query,Case.INSENSITIVE)
                 .sort("timestamp", Sort.DESCENDING).findAll();
+    }
+
+    private String generateUUID(){
+        return UUID.randomUUID().toString();
     }
 
 }

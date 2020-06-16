@@ -200,9 +200,9 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
 
     //Deletes an item and shows toast
     private void performDelete(int pos) {
-        long timestamp = story.get(pos).getTimestamp();
-        StoryData deletecStory = realmEngine.getSpecificData(timestamp);  //Saves the entry about to be deleted
-        realmEngine.deleteData(timestamp);
+        String uid = story.get(pos).getUniqueID();
+        StoryData deletecStory = realmEngine.getSpecificData(uid);  //Saves the entry about to be deleted
+        realmEngine.deleteData(uid);
         recyclerView.removeViewAt(pos);
         showSnack(deletecStory);
     }
@@ -252,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         String date = story.get(i).getDate();
         String time = story.get(i).getTime();
         String body = story.get(i).getBody();
+        String uid = story.get(i).getUniqueID();
         long timestamp = story.get(i).getTimestamp();
 
         Bundle args = new Bundle();
@@ -260,6 +261,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         args.putString(Tools.TIME, time);
         args.putLong(Tools.TIMESTAMP, timestamp);
         args.putInt(Tools.POSITION,i);
+        args.putString(Tools.UID, uid);
 
         return args;
     }
