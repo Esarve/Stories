@@ -1,4 +1,4 @@
-package com.sourav.story.Activities;
+package com.sourav.stories.Activities;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -13,10 +13,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.sourav.story.R;
-import com.sourav.story.Stuffs.RealmEngine;
-import com.sourav.story.Stuffs.StoryData;
-import com.sourav.story.Stuffs.Tools;
+import com.sourav.stories.R;
+import com.sourav.stories.Stuffs.RealmEngine;
+import com.sourav.stories.Stuffs.StoryData;
+import com.sourav.stories.Stuffs.Tools;
 
 import jp.wasabeef.richeditor.RichEditor;
 

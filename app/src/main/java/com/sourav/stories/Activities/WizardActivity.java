@@ -1,4 +1,4 @@
-package com.sourav.story.Activities;
+package com.sourav.stories.Activities;
 
 import android.os.Bundle;
 import android.view.View;
@@ -9,8 +9,8 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.sourav.story.R;
-import com.sourav.story.Stuffs.Tools;
+import com.sourav.stories.R;
+import com.sourav.stories.Stuffs.Tools;
 
 public class WizardActivity extends AppCompatActivity {
     private EditText editText;

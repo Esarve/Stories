@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sourav.story">
+    package="com.sourav.stories">
 
     <application
         android:allowBackup="true"
@@ -9,14 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.WizardActivity"
+        <activity android:name="com.sourav.stories.Activities.WizardActivity"
             android:windowSoftInputMode="adjustResize|stateHidden">
         </activity>
         <activity
-            android:name=".Activities.WriteActivity"
+            android:name="com.sourav.stories.Activities.WriteActivity"
             android:windowSoftInputMode="adjustResize">
         </activity>
-        <activity android:name=".Activities.MainActivity">
+        <activity android:name="com.sourav.stories.Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

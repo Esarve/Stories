@@ -1,4 +1,4 @@
-package com.sourav.story.OtherKindsOfViews;
+package com.sourav.stories.OtherKindsOfViews;
 
 import android.content.Context;
 import android.os.Build;
@@ -15,9 +15,9 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.sourav.story.Interfaces.OnBottomSheetClickListner;
-import com.sourav.story.R;
-import com.sourav.story.Stuffs.Tools;
+import com.sourav.stories.Interfaces.OnBottomSheetClickListner;
+import com.sourav.stories.R;
+import com.sourav.stories.Stuffs.Tools;
 
 public class BottomSheetViewer extends BottomSheetDialogFragment {
     private OnBottomSheetClickListner clickListener;

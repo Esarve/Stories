@@ -17,3 +17,6 @@
 /app/release/
 /gradlew
 /gradle/wrapper/
+/app/src/test/
+/app/src/androidTest/
+/app/build/
