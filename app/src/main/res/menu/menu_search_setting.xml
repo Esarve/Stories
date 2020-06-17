@@ -5,25 +5,29 @@
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search"
         android:orderInCategory="100"
-        android:title="Search"
+        android:title="@string/search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/nightSwitch"
         android:icon="@drawable/ic_night_24dp"
-        android:title="Night Mode"
+        android:title="@string/night_mode"
         app:showAsAction="collapseActionView"/>
-
+    <item
+        android:id="@+id/backup"
+        android:icon="@drawable/ic_night_24dp"
+        android:title="@string/backup_restore"
+        app:showAsAction="collapseActionView"/>
     <item
         android:id="@+id/settings"
         android:icon="@drawable/ic_night_24dp"
-        android:title="Settings"
+        android:title="@string/settings"
         app:showAsAction="collapseActionView"/>
 
     <item
         android:id="@+id/about"
         android:icon="@drawable/ic_night_24dp"
-        android:title="About"
+        android:title="@string/about"
         app:showAsAction="collapseActionView"/>
 </menu>

@@ -2,4 +2,12 @@
     <string name="app_name">Stories</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam et neque magna. Nulla facilisi. Etiam non neque at sapien commodo vestibulum a a odio. Nullam vulputate, arcu quis ullamcorper ultricies, neque ex pretium enim, a tempor ipsum turpis sed arcu. Integer porta ipsum sit amet leo pharetra, quis vulputate diam tristique. In risus neque, congue bibendum accumsan tempus, luctus sed orci. Nulla facilisi. Praesent consectetur feugiat justo. Aliquam et bibendum nulla. Aenean non tortor dui. Morbi blandit lacus non orci scelerisque, vel fringilla odio fringilla. Integer vel hendrerit sapien. Aenean finibus ligula eget odio feugiat tristique. Sed id tortor non enim imperdiet faucibus. Suspendisse finibus luctus vulputate. Aenean placerat orci lorem, sit amet finibus arcu tincidunt at.</string>
+    <string name="backup_restore"><![CDATA[Backup & restore]]></string>
+    <string name="night_mode">Night Mode</string>
+    <string name="search">Search</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
+    <string name="last_backup">Last backup: </string>
 </resources>

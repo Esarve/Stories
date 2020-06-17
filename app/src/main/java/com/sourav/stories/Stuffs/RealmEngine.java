@@ -1,5 +1,12 @@
 package com.sourav.stories.Stuffs;
 
+import com.sourav.stories.Interfaces.OnSuccessListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -13,11 +20,13 @@ public class RealmEngine {
 
     public static RealmEngine instance;
     private Realm realm;
+    private OnSuccessListener listener;
 
     public static RealmEngine getInstance() {
         if (instance == null){
             instance = new RealmEngine();
         }
+
         return instance;
     }
 
@@ -70,8 +79,27 @@ public class RealmEngine {
                 .sort("timestamp", Sort.DESCENDING).findAll();
     }
 
+    public List<StoryData> toList(){
+        return realm.copyFromRealm(getSearchResults());
+    }
+
+    public void restoreRealm(String json){
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            final JSONArray jsonArray = jsonObject.getJSONArray("results");
+            realm.executeTransaction(realm -> realm.createOrUpdateAllFromJson(StoryData.class, jsonArray));
+            listener.onRestoreSuccess();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     private String generateUUID(){
         return UUID.randomUUID().toString();
+    }
+
+    public void setListener(OnSuccessListener onSuccessListener){
+        listener = onSuccessListener;
     }
 
 }

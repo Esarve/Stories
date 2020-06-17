@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     private NewAdapter newAdapter;
     private HeaderAdapter headerAdapter;
     private SearchView searchView;
+    private TextView toolbarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initRealm();
-        initToolbar();
+        initSystemUI();
         initView();
         initData();
         initRecyclerView();
@@ -107,9 +109,11 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         tools.setSystemBarColor(this, R.color.grey_5);
         tools.setSystemBarLight(this);
         tools.setNavigationBarColor(getWindow().getDecorView(),this,R.color.grey_3,true);
+
+        toolbarTitle = findViewById(R.id.toolbar_title);
     }
 
-    private void initToolbar() {
+    private void initSystemUI() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.grey_80));
         setSupportActionBar(toolbar);
@@ -153,7 +157,8 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
                 new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                         .addSwipeLeftActionIcon(R.drawable.ic_outline_delete_24)
                         .addSwipeRightActionIcon(R.drawable.ic_outline_edit_24)
-                        .setActionIconTint(R.color.colorAccent)
+                        .setSwipeLeftActionIconTint(R.color.red_600)
+                        .setSwipeRightActionIconTint(R.color.colorAccentLight)
                         .addSwipeRightLabel("Edit")
                         .addSwipeLeftLabel("Delete")
                         .create()
@@ -219,12 +224,13 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         tools.changeMenuIconColor(menu, getResources().getColor(R.color.grey_80));
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        MenuItem nightmode = menu.findItem(R.id.nightSwitch);
-        nightmode.setOnMenuItemClickListener(item -> {
-            Toast.makeText(getApplicationContext(),"NIGHT MODE: WIP", Toast.LENGTH_SHORT).show();
+        searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnSearchClickListener(v -> toolbarTitle.setVisibility(View.GONE));
+        searchView.setOnCloseListener(() -> {
+            toolbarTitle.setVisibility(View.VISIBLE);
             return false;
         });
-        searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -302,6 +308,19 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         if (v.getId() == efab.getId()) {
             openEditor();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.backup:
+                Intent intent = new Intent(MainActivity.this, BackupRestoreActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.about:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -51,6 +51,11 @@ public class Tools {
     public static final String USERNAME = "name";
     public static final String PREFTYPE_NAME = "namepref";
 
+    //Backup Stuffs
+    public static final String BACKUPTIMEDATEFORMAT = "yyyyMMdd_HHmm";
+    public static final String BACKUPDIR ="Documents/Stories";
+    public static final String BACKUPNAME = "storybackup.bkp";
+
 
     private static Tools instance;
 
@@ -121,6 +126,18 @@ public class Tools {
         ((TextView) custom_view.findViewById(R.id.message)).setText(message);
         ((ImageView) custom_view.findViewById(R.id.icon)).setImageResource(R.drawable.ic_close);
         ((CardView) custom_view.findViewById(R.id.parent_view)).setCardBackgroundColor(context.getResources().getColor(R.color.red_600));
+        toast.setView(custom_view);
+        toast.show();
+    }
+
+    public void successToast(Context context, String message) {
+        Toast toast = new Toast(context);
+        toast.setDuration(Toast.LENGTH_LONG);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View custom_view = inflater.inflate(R.layout.toast_icon_text, null);
+        ((TextView) custom_view.findViewById(R.id.message)).setText(message);
+        ((ImageView) custom_view.findViewById(R.id.icon)).setImageResource(R.drawable.ic_check_black_24dp);
+        ((CardView) custom_view.findViewById(R.id.parent_view)).setCardBackgroundColor(context.getResources().getColor(R.color.green_600));
         toast.setView(custom_view);
         toast.show();
     }

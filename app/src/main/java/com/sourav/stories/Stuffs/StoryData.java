@@ -1,14 +1,31 @@
 package com.sourav.stories.Stuffs;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class StoryData extends RealmObject {
+    @Expose
+    @SerializedName("uniqueID")
     @PrimaryKey
     private String uniqueID;
+
+    @Expose
+    @SerializedName("time")
     private String time;
-    private String Date;
+
+    @Expose
+    @SerializedName("date")
+    private String date;
+
+    @Expose
+    @SerializedName("body")
     private String body;
+
+    @Expose
+    @SerializedName("timestamp")
     private long timestamp;
 
     public StoryData() {
@@ -16,7 +33,7 @@ public class StoryData extends RealmObject {
 
     public StoryData(String time, String date, String body, long timestamp, String uid) {
         this.time = time;
-        Date = date;
+        this.date = date;
         this.body = body;
         this.timestamp = timestamp;
         uniqueID = uid;
@@ -24,7 +41,7 @@ public class StoryData extends RealmObject {
 
     public StoryData(String time, String date, String body) {
         this.time = time;
-        Date = date;
+        this.date = date;
         this.body = body;
     }
 
@@ -37,11 +54,11 @@ public class StoryData extends RealmObject {
     }
 
     public String getDate() {
-        return Date;
+        return date;
     }
 
     public void setDate(String date) {
-        Date = date;
+        this.date = date;
     }
 
     public String getBody() {
