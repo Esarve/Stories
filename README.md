@@ -1,4 +1,4 @@
-# Story
+# Stories
 An opensource journal app for adding everyday events
 
 ## Liberies used
