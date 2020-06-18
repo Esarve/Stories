@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="q">
-        <activity android:name=".Activities.AboutActivity"></activity>
+        <activity android:name=".Activities.AboutActivity">
+        </activity>
         <activity android:name=".Activities.BackupRestoreActivity" />
         <activity
             android:name=".Activities.WizardActivity"
