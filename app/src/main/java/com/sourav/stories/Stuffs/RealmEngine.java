@@ -75,7 +75,7 @@ public class RealmEngine {
         return realm.where(StoryData.class)
                 .contains("body", query, Case.INSENSITIVE)
                 .or()
-                .contains("Date", query,Case.INSENSITIVE)
+                .contains("date", query,Case.INSENSITIVE)
                 .sort("timestamp", Sort.DESCENDING).findAll();
     }
 

@@ -314,14 +314,27 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.backup:
-                Intent intent = new Intent(MainActivity.this, BackupRestoreActivity.class);
-                startActivity(intent);
+                openSelectedActivity(BackupRestoreActivity.class);
                 break;
             case R.id.about:
+                openSelectedActivity(AboutActivity.class);
                 break;
+            case R.id.settings:
+                tools.errorToast(this, "Settings not implemented Yet");
+                break;
+            case R.id.nightSwitch:
+                tools.errorToast(this, "Nightmode not implemented Yet");
+                throw new RuntimeException("This is a crash");
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void openSelectedActivity(Class<?> c){
+        Intent intent = new Intent(MainActivity.this, c);
+        startActivity(intent);
+    }
+
+
 
     @Override
     public void onBottomSheetButtonClick(View view, int pos) {

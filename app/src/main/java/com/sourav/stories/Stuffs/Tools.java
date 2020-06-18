@@ -16,11 +16,13 @@ import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.BlendModeColorFilterCompat;
 import androidx.core.graphics.BlendModeCompat;
 
+import com.sourav.stories.Interfaces.OnAlertDialogActionClickListener;
 import com.sourav.stories.R;
 
 import org.jsoup.Jsoup;
@@ -58,6 +60,7 @@ public class Tools {
 
 
     private static Tools instance;
+    private OnAlertDialogActionClickListener listener;
 
     public static Tools getInstance(){
         if (instance == null)
@@ -130,6 +133,7 @@ public class Tools {
         toast.show();
     }
 
+    //Shows custom success toast
     public void successToast(Context context, String message) {
         Toast toast = new Toast(context);
         toast.setDuration(Toast.LENGTH_LONG);
@@ -177,8 +181,36 @@ public class Tools {
 
     //converts formatted text into plain text
     public String getPlainText(String html){
-        Document doc = Jsoup.parse(html);
-        return doc.body().text();
+        if (html!=null) {
+            Document doc = Jsoup.parse(html);
+            return doc.body().text();
+        }else return "";
+    }
+
+    public void createSimpleAlert(Context context, String title, String buttonPositiveText, String buttonNegativeText){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+        builder1.setMessage(title);
+        builder1.setCancelable(true);
+        builder1.setPositiveButton(
+                buttonPositiveText,
+                (dialog, id) -> {
+                    listener.onPositiveClick();
+                    dialog.cancel();
+                });
+
+        builder1.setNegativeButton(
+                buttonNegativeText,
+                (dialog, id) -> {
+                    listener.onNegativeClick();
+                    dialog.cancel();
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
+
+    public void setListener(OnAlertDialogActionClickListener listener){
+        this.listener = listener;
     }
 
 }

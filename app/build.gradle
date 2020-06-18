@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
-apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
@@ -11,8 +10,8 @@ android {
         applicationId "com.sourav.stories"
         minSdkVersion 22
         targetSdkVersion 29
-        versionCode 100
-        versionName "alpha-1.1"
+        versionCode 201
+        versionName "alpha-1.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         ndk {
@@ -50,8 +49,6 @@ dependencies {
     //Rich Text
     implementation 'jp.wasabeef:richeditor-android:1.2.2'
     implementation 'org.jsoup:jsoup:1.11.3'
-    //firebase
-    implementation 'com.google.firebase:firebase-analytics:17.4.3'
     //crashlytics
     implementation 'com.google.firebase:firebase-crashlytics:17.0.1'
     //Gson

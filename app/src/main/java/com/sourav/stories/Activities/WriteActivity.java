@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sourav.stories.Interfaces.OnAlertDialogActionClickListener;
 import com.sourav.stories.R;
 import com.sourav.stories.Stuffs.RealmEngine;
 import com.sourav.stories.Stuffs.StoryData;
@@ -20,7 +21,7 @@ import com.sourav.stories.Stuffs.Tools;
 
 import jp.wasabeef.richeditor.RichEditor;
 
-public class WriteActivity extends AppCompatActivity implements View.OnClickListener {
+public class WriteActivity extends AppCompatActivity implements View.OnClickListener, OnAlertDialogActionClickListener {
     private RichEditor editText;
     private Tools tools = Tools.getInstance();
     private String ediTime, editDate, editBody,
@@ -89,12 +90,8 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
         });
 
         fab.setOnClickListener(v -> {
-            if (isDuplicate()){
-                writeData();
-                finish();
-            }else
-                tools.errorToast(this,"You have already entered the same story!");
-            closeKeyboard();
+            writeData();
+            //closeKeyboard();
         });
 
         tools.setSystemBarColor(this, R.color.grey_5);
@@ -120,21 +117,16 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-    }
-
-    private boolean isDuplicate() {
-        boolean result;
-        result = prev.equalsIgnoreCase(tools.getPlainText(editText.getHtml()));
-        prev = tools.getPlainText(editText.getHtml());
-        return !result;
+        tools.setListener(WriteActivity.this);
     }
 
     private void writeData() {
         RealmEngine realmEngine = RealmEngine.getInstance();
         String bodyFinal = editText.getHtml();
-        if (!bodyFinal.isEmpty()) {
+        if (editText.getHtml()!= null) {
             if (!isEditMode) {
                 realmEngine.insertData(entryTime, entryDate, bodyFinal);
+                prev = bodyFinal;
             } else {
                 realmEngine.deleteData(uid);
                 realmEngine.addSpecificStory(
@@ -144,6 +136,7 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
                 );
             }
             Log.d(TAG, "writeData: Modified Millis: " + Tools.generateMillis(editDate, ediTime));
+            finish();
         } else {
             String message = "Text field is empty";
             tools.errorToast(this, message);
@@ -211,6 +204,12 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
         imageButton.invalidate();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (editText.getHtml() != null){
+            tools.createSimpleAlert(this, "You have unsaved entry. Do you want to save it before leaving?", "Save", "Leave");
+        }else super.onBackPressed();
+    }
 
     @Override
     public void onClick(View v) {
@@ -220,5 +219,15 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
             case R.id.action_calender:
                 break;
         }
+    }
+
+    @Override
+    public void onPositiveClick() {
+        writeData();
+    }
+
+    @Override
+    public void onNegativeClick() {
+        finish();
     }
 }
