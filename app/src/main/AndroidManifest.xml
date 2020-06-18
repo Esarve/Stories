@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sourav.story">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.sourav.stories">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".Activities.WizardActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden">
+        android:theme="@style/AppTheme"
+        tools:targetApi="q">
+        <activity android:name=".Activities.AboutActivity">
         </activity>
+        <activity android:name=".Activities.BackupRestoreActivity" />
+        <activity
+            android:name=".Activities.WizardActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".Activities.WriteActivity"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

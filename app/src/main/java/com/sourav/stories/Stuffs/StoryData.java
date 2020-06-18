@@ -1,29 +1,47 @@
-package com.sourav.story.Stuffs;
+package com.sourav.stories.Stuffs;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class StoryData extends RealmObject {
-    private String uniqueID;
-    private String time;
-    private String Date;
-    private String body;
+    @Expose
+    @SerializedName("uniqueID")
     @PrimaryKey
+    private String uniqueID;
+
+    @Expose
+    @SerializedName("time")
+    private String time;
+
+    @Expose
+    @SerializedName("date")
+    private String date;
+
+    @Expose
+    @SerializedName("body")
+    private String body;
+
+    @Expose
+    @SerializedName("timestamp")
     private long timestamp;
 
     public StoryData() {
     }
 
-    public StoryData(String time, String date, String body, long timestamp) {
+    public StoryData(String time, String date, String body, long timestamp, String uid) {
         this.time = time;
-        Date = date;
+        this.date = date;
         this.body = body;
         this.timestamp = timestamp;
+        uniqueID = uid;
     }
 
     public StoryData(String time, String date, String body) {
         this.time = time;
-        Date = date;
+        this.date = date;
         this.body = body;
     }
 
@@ -36,11 +54,11 @@ public class StoryData extends RealmObject {
     }
 
     public String getDate() {
-        return Date;
+        return date;
     }
 
     public void setDate(String date) {
-        Date = date;
+        this.date = date;
     }
 
     public String getBody() {
@@ -57,5 +75,13 @@ public class StoryData extends RealmObject {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getUniqueID() {
+        return uniqueID;
+    }
+
+    public void setUniqueID(String uniqueID) {
+        this.uniqueID = uniqueID;
     }
 }

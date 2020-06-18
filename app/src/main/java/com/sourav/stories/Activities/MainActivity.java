@@ -1,4 +1,4 @@
-package com.sourav.story.Activities;
+package com.sourav.stories.Activities;
 
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -7,15 +7,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.BlendModeColorFilterCompat;
-import androidx.core.graphics.BlendModeCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.MergeAdapter;
@@ -23,25 +23,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.sourav.story.Adapters.HeaderAdapter;
-import com.sourav.story.Adapters.NewAdapter;
-import com.sourav.story.Interfaces.OnBottomSheetClickListner;
-import com.sourav.story.Interfaces.OnRVClickListner;
-import com.sourav.story.OtherKindsOfViews.BottomSheetViewer;
-import com.sourav.story.R;
-import com.sourav.story.Stuffs.RealmEngine;
-import com.sourav.story.Stuffs.StoryData;
-import com.sourav.story.Stuffs.Tools;
+import com.sourav.stories.Adapters.HeaderAdapter;
+import com.sourav.stories.Adapters.NewAdapter;
+import com.sourav.stories.Interfaces.OnBottomSheetClickListner;
+import com.sourav.stories.Interfaces.OnRVClickListner;
+import com.sourav.stories.OtherKindsOfViews.BottomSheetViewer;
+import com.sourav.stories.R;
+import com.sourav.stories.Stuffs.RealmEngine;
+import com.sourav.stories.Stuffs.StoryData;
+import com.sourav.stories.Stuffs.Tools;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-public class MainActivity extends AppCompatActivity implements OnRVClickListner, OnBottomSheetClickListner, View.OnClickListener {
-    private static final String TAG = "Main Activity" ;
+public class MainActivity extends AppCompatActivity
+        implements OnRVClickListner, OnBottomSheetClickListner, View.OnClickListener {
+    private static final String TAG = "MainActivity" ;
     private CoordinatorLayout parent;
     private List<StoryData> story = new ArrayList<>();
     private ExtendedFloatingActionButton efab;
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     private RealmResults<StoryData> realmResults;
     private NewAdapter newAdapter;
     private HeaderAdapter headerAdapter;
+    private SearchView searchView;
+    private TextView toolbarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initRealm();
-        initToolbar();
+        initSystemUI();
         initView();
         initData();
         initRecyclerView();
@@ -74,6 +78,16 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     private void initData() {
         story = realmEngine.getResults();
     }
+
+    private void initData(String query) {
+        story = realmEngine.getResults(query);
+        refresh();
+    }
+
+    private void refresh() {
+        initRecyclerView();
+    }
+
 
     private void initRealm() {
         Realm.init(this);
@@ -96,18 +110,15 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         tools.setSystemBarColor(this, R.color.grey_5);
         tools.setSystemBarLight(this);
         tools.setNavigationBarColor(getWindow().getDecorView(),this,R.color.grey_3,true);
+
+        toolbarTitle = findViewById(R.id.toolbar_title);
     }
 
-    private void initToolbar() {
+    private void initSystemUI() {
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.drawable.ic_menu));
-        toolbar.getNavigationIcon().setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
-                getResources().getColor(R.color.grey_80),
-                BlendModeCompat.SRC_ATOP));
         toolbar.setTitleTextColor(getResources().getColor(R.color.grey_80));
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getTitle());
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
     }
 
     private void initRecyclerView() {
@@ -147,7 +158,8 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
                 new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                         .addSwipeLeftActionIcon(R.drawable.ic_outline_delete_24)
                         .addSwipeRightActionIcon(R.drawable.ic_outline_edit_24)
-                        .setActionIconTint(R.color.colorAccent)
+                        .setSwipeLeftActionIconTint(R.color.red_600)
+                        .setSwipeRightActionIconTint(R.color.colorAccentLight)
                         .addSwipeRightLabel("Edit")
                         .addSwipeLeftLabel("Delete")
                         .create()
@@ -188,9 +200,9 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
 
     //Deletes an item and shows toast
     private void performDelete(int pos) {
-        long timestamp = story.get(pos).getTimestamp();
-        StoryData deletecStory = realmEngine.getSpecificData(timestamp);  //Saves the entry about to be deleted
-        realmEngine.deleteData(timestamp);
+        String uid = story.get(pos).getUniqueID();
+        StoryData deletecStory = realmEngine.getSpecificData(uid);  //Saves the entry about to be deleted
+        realmEngine.deleteData(uid);
         recyclerView.removeViewAt(pos);
         showSnack(deletecStory);
     }
@@ -213,12 +225,26 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         tools.changeMenuIconColor(menu, getResources().getColor(R.color.grey_80));
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        MenuItem nightmode = menu.findItem(R.id.nightSwitch);
-        nightmode.setOnMenuItemClickListener(item -> {
-            Toast.makeText(getApplicationContext(),"NIGHT MODE: WIP", Toast.LENGTH_SHORT).show();
+        searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnSearchClickListener(v -> toolbarTitle.setVisibility(View.GONE));
+        searchView.setOnCloseListener(() -> {
+            toolbarTitle.setVisibility(View.VISIBLE);
             return false;
         });
-        //SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText){
+                Log.d(TAG, "onQueryTextChange: "+ newText);
+                initData(newText);
+                return false;
+            }
+        });
         return true;
     }
 
@@ -227,6 +253,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         String date = story.get(i).getDate();
         String time = story.get(i).getTime();
         String body = story.get(i).getBody();
+        String uid = story.get(i).getUniqueID();
         long timestamp = story.get(i).getTimestamp();
 
         Bundle args = new Bundle();
@@ -235,8 +262,18 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         args.putString(Tools.TIME, time);
         args.putLong(Tools.TIMESTAMP, timestamp);
         args.putInt(Tools.POSITION,i);
+        args.putString(Tools.UID, uid);
 
         return args;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     //Opens the editor with bundled data from selected item
@@ -272,6 +309,36 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         if (v.getId() == efab.getId()) {
             openEditor();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        realmEngine.closeRealm();
+        super.onDestroy();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.backup:
+                openSelectedActivity(BackupRestoreActivity.class);
+                break;
+            case R.id.about:
+                openSelectedActivity(AboutActivity.class);
+                break;
+            case R.id.settings:
+                tools.errorToast(this, "Settings not implemented Yet");
+                break;
+            case R.id.nightSwitch:
+                tools.errorToast(this, "Nightmode not implemented Yet");
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void openSelectedActivity(Class<?> c){
+        Intent intent = new Intent(MainActivity.this, c);
+        startActivity(intent);
     }
 
     @Override

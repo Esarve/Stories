@@ -1,4 +1,4 @@
-package com.sourav.story.Adapters;
+package com.sourav.stories.Adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,9 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sourav.story.Interfaces.OnRVClickListner;
-import com.sourav.story.R;
-import com.sourav.story.Stuffs.StoryData;
+import com.sourav.stories.Interfaces.OnRVClickListner;
+import com.sourav.stories.R;
+import com.sourav.stories.Stuffs.StoryData;
+import com.sourav.stories.Stuffs.Tools;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class NewAdapter extends RecyclerView.Adapter<NewAdapter.ViewHolder> {
     private List<StoryData> data;
     private Context mContext;
     private OnRVClickListner listner;
+    private Tools tools = new Tools();
 
     public NewAdapter(Context mContext, List<StoryData> data) {
         this.data = data;
@@ -41,7 +43,7 @@ public class NewAdapter extends RecyclerView.Adapter<NewAdapter.ViewHolder> {
         Log.d("RV", "onBindViewHolder: Called");
         Log.d("RV", "onBindViewHolder: Value of i " + i);
         StoryData story = data.get(i);
-        viewHolder.title.setText(story.getBody());
+        viewHolder.title.setText(tools.getPlainText(story.getBody()));
         viewHolder.time.setText(story.getTime());
         viewHolder.date.setText(story.getDate());
         viewHolder.parent.setOnClickListener(v -> listner.onClick(i));

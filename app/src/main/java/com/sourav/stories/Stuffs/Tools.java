@@ -1,4 +1,4 @@
-package com.sourav.story.Stuffs;
+package com.sourav.stories.Stuffs;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,12 +16,17 @@ import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.BlendModeColorFilterCompat;
 import androidx.core.graphics.BlendModeCompat;
 
-import com.sourav.story.R;
+import com.sourav.stories.Interfaces.OnAlertDialogActionClickListener;
+import com.sourav.stories.R;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -37,6 +42,7 @@ public class Tools {
     public static final String  BODY = "body";
     public static final String DATE = "date";
     public static final String POSITION = "pos";
+    public static final String UID = "uid";
 
     //Time date format stuffs
     public static final String TIME_FORMAT = "hh:mm a";
@@ -47,8 +53,14 @@ public class Tools {
     public static final String USERNAME = "name";
     public static final String PREFTYPE_NAME = "namepref";
 
+    //Backup Stuffs
+    public static final String BACKUPTIMEDATEFORMAT = "yyyyMMdd_HHmm";
+    public static final String BACKUPDIR ="Documents/Stories";
+    public static final String BACKUPNAME = "storybackup.bkp";
+
 
     private static Tools instance;
+    private OnAlertDialogActionClickListener listener;
 
     public static Tools getInstance(){
         if (instance == null)
@@ -56,6 +68,7 @@ public class Tools {
         return instance;
     }
 
+    //Systembar, navigationbar stuffs
     public void setSystemBarColor(Activity act, @ColorRes int color) {
         Window window = act.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -120,6 +133,19 @@ public class Tools {
         toast.show();
     }
 
+    //Shows custom success toast
+    public void successToast(Context context, String message) {
+        Toast toast = new Toast(context);
+        toast.setDuration(Toast.LENGTH_LONG);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View custom_view = inflater.inflate(R.layout.toast_icon_text, null);
+        ((TextView) custom_view.findViewById(R.id.message)).setText(message);
+        ((ImageView) custom_view.findViewById(R.id.icon)).setImageResource(R.drawable.ic_check_black_24dp);
+        ((CardView) custom_view.findViewById(R.id.parent_view)).setCardBackgroundColor(context.getResources().getColor(R.color.green_600));
+        toast.setView(custom_view);
+        toast.show();
+    }
+
     //Gets current date and time
     public String getCurrentTimeDate(String timeOrDate) {
         DateFormat dateFormat = new SimpleDateFormat(timeOrDate, Locale.getDefault());
@@ -139,6 +165,7 @@ public class Tools {
         return "";
     }
 
+    //saves value into shared preference
     public void saveToSharedPref(Context context, String prefType, String key, String value){
         SharedPreferences sharedPreferences = context.getSharedPreferences(prefType, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -146,9 +173,44 @@ public class Tools {
         editor.apply();
     }
 
+    //gets value from shared preference
     public String getFromSharedPref(Context context, String prefType, String key){
         SharedPreferences sharedPreferences = context.getSharedPreferences(prefType, Context.MODE_PRIVATE);
         return sharedPreferences.getString(key, null);
+    }
+
+    //converts formatted text into plain text
+    public String getPlainText(String html){
+        if (html!=null) {
+            Document doc = Jsoup.parse(html);
+            return doc.body().text();
+        }else return "";
+    }
+
+    public void createSimpleAlert(Context context, String title, String buttonPositiveText, String buttonNegativeText){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+        builder1.setMessage(title);
+        builder1.setCancelable(true);
+        builder1.setPositiveButton(
+                buttonPositiveText,
+                (dialog, id) -> {
+                    listener.onPositiveClick();
+                    dialog.cancel();
+                });
+
+        builder1.setNegativeButton(
+                buttonNegativeText,
+                (dialog, id) -> {
+                    listener.onNegativeClick();
+                    dialog.cancel();
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
+
+    public void setListener(OnAlertDialogActionClickListener listener){
+        this.listener = listener;
     }
 
 }

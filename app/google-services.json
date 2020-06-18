@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "672802609072",
+    "firebase_url": "https://stories-srv.firebaseio.com",
+    "project_id": "stories-srv",
+    "storage_bucket": "stories-srv.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:672802609072:android:6432d816d59371bbaca875",
+        "android_client_info": {
+          "package_name": "com.sourav.stories"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "672802609072-ulv31ku0gaqnal9b642iipf2gentkthe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlDs4sZBaaUMDIEKpK6CgiVXsI-1J6kWg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "672802609072-ulv31ku0gaqnal9b642iipf2gentkthe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

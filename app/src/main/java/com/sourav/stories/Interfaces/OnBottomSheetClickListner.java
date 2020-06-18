@@ -1,4 +1,4 @@
-package com.sourav.story.Interfaces;
+package com.sourav.stories.Interfaces;
 
 import android.view.View;
 
