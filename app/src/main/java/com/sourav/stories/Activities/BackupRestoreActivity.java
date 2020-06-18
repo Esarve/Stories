@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sourav.stories.Interfaces.OnSuccessListener;
@@ -84,8 +83,8 @@ public class BackupRestoreActivity extends AppCompatActivity implements OnSucces
             tools.successToast(this, "Backup Successful");
         } catch (Exception e) {
             e.printStackTrace();
-            FirebaseCrashlytics.getInstance().log("WHILE BACKING UP");
-            FirebaseCrashlytics.getInstance().recordException(e);
+            /*FirebaseCrashlytics.getInstance().log("WHILE BACKING UP");
+            FirebaseCrashlytics.getInstance().recordException(e);*/
             tools.errorToast(this,"Backup Failed");
         }
         textView.setText("Created");
@@ -109,8 +108,8 @@ public class BackupRestoreActivity extends AppCompatActivity implements OnSucces
                 Log.d(TAG, "restore: "+ text.toString());
             }catch (IOException e){
                 e.printStackTrace();
-                FirebaseCrashlytics.getInstance().log("IN RESTORE TRY CATCH");
-                FirebaseCrashlytics.getInstance().recordException(e);
+                /*FirebaseCrashlytics.getInstance().log("IN RESTORE TRY CATCH");
+                FirebaseCrashlytics.getInstance().recordException(e);*/
                 tools.errorToast(this,"File not found!");
             }
             realmEngine.restoreRealm(text.toString());

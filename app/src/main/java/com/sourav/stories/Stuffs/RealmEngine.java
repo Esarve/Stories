@@ -67,11 +67,11 @@ public class RealmEngine {
         });
     }
 
-    public RealmResults<StoryData> getSearchResults(){
+    public RealmResults<StoryData> getResults(){
         return realm.where(StoryData.class).sort("timestamp", Sort.DESCENDING).findAll();
     }
 
-    public RealmResults<StoryData> getSearchResults(String query){
+    public RealmResults<StoryData> getResults(String query){
         return realm.where(StoryData.class)
                 .contains("body", query, Case.INSENSITIVE)
                 .or()
@@ -80,7 +80,7 @@ public class RealmEngine {
     }
 
     public List<StoryData> toList(){
-        return realm.copyFromRealm(getSearchResults());
+        return realm.copyFromRealm(getResults());
     }
 
     public void restoreRealm(String json){
@@ -102,4 +102,7 @@ public class RealmEngine {
         listener = onSuccessListener;
     }
 
+    public void closeRealm(){
+        realm.close();
+    }
 }

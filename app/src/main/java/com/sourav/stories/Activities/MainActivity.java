@@ -41,7 +41,8 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-public class MainActivity extends AppCompatActivity implements OnRVClickListner, OnBottomSheetClickListner, View.OnClickListener {
+public class MainActivity extends AppCompatActivity
+        implements OnRVClickListner, OnBottomSheetClickListner, View.OnClickListener {
     private static final String TAG = "MainActivity" ;
     private CoordinatorLayout parent;
     private List<StoryData> story = new ArrayList<>();
@@ -75,11 +76,11 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     }
 
     private void initData() {
-        story = realmEngine.getSearchResults();
+        story = realmEngine.getResults();
     }
 
     private void initData(String query) {
-        story = realmEngine.getSearchResults(query);
+        story = realmEngine.getResults(query);
         refresh();
     }
 
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         Realm.init(this);
         realmEngine = RealmEngine.getInstance();
         realmEngine.initRealm();
-        realmResults = realmEngine.getSearchResults(); //todo: FIX THIS
+        realmResults = realmEngine.getResults();
 
         realmResults.addChangeListener(storyData -> {
             initData();
@@ -311,6 +312,12 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
     }
 
     @Override
+    protected void onDestroy() {
+        realmEngine.closeRealm();
+        super.onDestroy();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.backup:
@@ -324,7 +331,7 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
                 break;
             case R.id.nightSwitch:
                 tools.errorToast(this, "Nightmode not implemented Yet");
-                throw new RuntimeException("This is a crash");
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -333,8 +340,6 @@ public class MainActivity extends AppCompatActivity implements OnRVClickListner,
         Intent intent = new Intent(MainActivity.this, c);
         startActivity(intent);
     }
-
-
 
     @Override
     public void onBottomSheetButtonClick(View view, int pos) {
