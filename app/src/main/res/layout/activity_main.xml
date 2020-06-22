@@ -4,7 +4,7 @@
     android:id="@+id/parent_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_3"
+    android:background="@color/colorBG"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -17,7 +17,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/grey_3"
+            android:background="@color/colorBG"
             app:contentInsetStartWithNavigation="0dp"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -31,7 +31,7 @@
                 android:layout_gravity="center"
                 android:fontFamily="sans-serif-light"
                 android:text="@string/app_name"
-                android:textColor="@color/grey_80"
+                android:textColor="@color/colorTxt_D1"
                 android:textSize="24sp" />
         </androidx.appcompat.widget.Toolbar>
 

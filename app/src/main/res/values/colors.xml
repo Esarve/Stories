@@ -6,9 +6,8 @@
     <color name="colorAccent">#FF5722</color>
     <color name="colorAccentDark">#F50057</color>
     <color name="colorAccentLight">@color/deep_orange_A200</color>
-
-    <color name="mdtp_accent_color">#009688</color>
-    <color name="mdtp_accent_color_dark">#00796b</color>
+    <color name="colorBG">@color/grey_3</color>
+    <color name="colorTxt_D1">@color/grey_80</color>
 
     <color name="overlay_dark_10">#1A000000</color>
     <color name="overlay_dark_20">#33000000</color>

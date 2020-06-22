@@ -22,7 +22,7 @@ import com.sourav.stories.Stuffs.Tools;
 public class BottomSheetViewer extends BottomSheetDialogFragment {
     private OnBottomSheetClickListner clickListener;
     private String time, date, body;
-    private TextView tvHeader, tvBody;
+    private TextView tvHeaderDate, tvHeaderTime, tvBody;
     private Button btnEdit, btnDismiss;
     private int pos;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -46,8 +46,9 @@ public class BottomSheetViewer extends BottomSheetDialogFragment {
     }
 
     private void initView(View view) {
-        tvHeader = view.findViewById(R.id.viewTitle);
-        tvBody = view.findViewById(R.id.viewBody);
+        tvHeaderDate = view.findViewById(R.id.tvTitleDate);
+        tvHeaderTime = view.findViewById(R.id.tvTitleTime);
+        tvBody = view.findViewById(R.id.tvViewerBody);
         btnEdit = view.findViewById(R.id.btnEdit);
         btnDismiss = view.findViewById(R.id.btnDismiss);
 
@@ -62,8 +63,8 @@ public class BottomSheetViewer extends BottomSheetDialogFragment {
     }
 
     private void initData() {
-        String header = date + " " +time;
-        tvHeader.setText(header);
+        tvHeaderTime.setText(time);
+        tvHeaderDate.setText(date);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             tvBody.setText(Html.fromHtml(body, Html.FROM_HTML_MODE_COMPACT));
         } else {

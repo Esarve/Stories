@@ -5,27 +5,53 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/viewTitle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="sans-serif-medium"
-        android:lineSpacingExtra="10sp"
-        android:text="4 February 10:10AM"
-        android:textAlignment="viewStart"
-        android:textSize="24sp"
-        android:typeface="normal" />
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <TextView
+            android:id="@+id/tvTitleDate"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="5"
+            android:fontFamily="sans-serif-medium"
+            android:lineSpacingExtra="10sp"
+            android:text="4 February"
+            android:textAlignment="viewStart"
+            android:textSize="24sp"
+            android:typeface="normal" />
+
+        <TextView
+            android:id="@+id/tvTitleTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="5"
+            android:fontFamily="sans-serif-medium"
+            android:lineSpacingExtra="10sp"
+            android:paddingEnd="4dp"
+            android:text="10:10 PM"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/colorAccent"
+            android:textSize="24sp"
+            android:typeface="normal" />
+
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="4dp"/>
+        android:layout_height="4dp" />
+
     <TextView
-        android:id="@+id/viewBody"
+        android:id="@+id/tvViewerBody"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:lineSpacingExtra="8sp"
+        android:lineSpacingExtra="6sp"
         android:maxLines="20"
         android:text="@string/lorem"
         android:textSize="18sp"
