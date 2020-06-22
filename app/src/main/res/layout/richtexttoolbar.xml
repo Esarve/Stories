@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/grey_3"
         android:src="@drawable/ic_baseline_format_bold_24"
-        android:tint="@color/colorAccentLight" />
+        android:tint="@color/colorPrimary" />
 
     <ImageButton
         android:id="@+id/action_italic"
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/grey_3"
         android:src="@drawable/ic_baseline_format_italic_24"
-        android:tint="@color/colorAccentLight" />
+        android:tint="@color/colorPrimary" />
 
     <ImageButton
         android:id="@+id/action_underline"
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/grey_3"
         android:src="@drawable/ic_baseline_format_underlined_24"
-        android:tint="@color/colorAccentLight" />
+        android:tint="@color/colorPrimary" />
 
     <ImageButton
         android:id="@+id/action_bullet"
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/grey_3"
         android:src="@drawable/ic_baseline_format_list_bulleted_24"
-        android:tint="@color/colorAccentLight" />
+        android:tint="@color/colorPrimary" />
     <LinearLayout
         android:layout_width="1dp"
         android:layout_height="match_parent"
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/grey_3"
         android:src="@drawable/ic_outline_calendar_today_24"
-        android:tint="@color/colorAccentLight" />
+        android:tint="@color/colorPrimary" />
 
     <ImageButton
         android:id="@+id/action_clock"
@@ -60,6 +60,6 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/grey_3"
         android:src="@drawable/ic_clock_24dp"
-        android:tint="@color/colorAccentLight" />
+        android:tint="@color/colorPrimary" />
 
 </LinearLayout>

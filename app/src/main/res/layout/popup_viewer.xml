@@ -16,9 +16,11 @@
         android:text="4 February 10:10AM"
         android:textAlignment="viewStart"
         android:textSize="24sp"
-        android:textStyle="bold"
         android:typeface="normal" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"/>
     <TextView
         android:id="@+id/viewBody"
         android:layout_width="match_parent"

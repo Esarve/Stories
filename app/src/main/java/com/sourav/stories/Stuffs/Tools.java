@@ -34,7 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class Tools {
+public class Tools  {
 
     //KEYs for bundle stuffs
     public static final String TIME = "header";
@@ -187,6 +187,7 @@ public class Tools {
         }else return "";
     }
 
+    //Create alert with two buttons
     public void createSimpleAlert(Context context, String title, String buttonPositiveText, String buttonNegativeText){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
         builder1.setMessage(title);
@@ -212,5 +213,4 @@ public class Tools {
     public void setListener(OnAlertDialogActionClickListener listener){
         this.listener = listener;
     }
-
 }

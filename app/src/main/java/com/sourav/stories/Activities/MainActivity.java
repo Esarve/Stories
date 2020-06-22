@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity
         efab = findViewById(R.id.fab);
         efab.setOnClickListener(this);
 
-        tools.setSystemBarColor(this, R.color.grey_5);
+        tools.setSystemBarColor(this, R.color.grey_3);
         tools.setSystemBarLight(this);
         tools.setNavigationBarColor(getWindow().getDecorView(),this,R.color.grey_3,true);
 
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initSystemUI() {
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.grey_80));
+        toolbar.setTitleTextColor(getResources().getColor(R.color.grey_40));
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
     }

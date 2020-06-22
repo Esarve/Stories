@@ -48,7 +48,6 @@ public class WizardActivity extends AppCompatActivity {
     private void initToolbar() {
         tools.setSystemBarColor(this, R.color.colorAccentLight);
         tools.setSystemBarLight(this);
-        tools.setNavigationBarColor(getWindow().getDecorView(),this, R.color.colorAccentLight,true);
     }
 
     private void saveName() {

@@ -18,10 +18,14 @@ import com.sourav.stories.R;
 import com.sourav.stories.Stuffs.RealmEngine;
 import com.sourav.stories.Stuffs.StoryData;
 import com.sourav.stories.Stuffs.Tools;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
+
+import java.util.Calendar;
 
 import jp.wasabeef.richeditor.RichEditor;
 
-public class WriteActivity extends AppCompatActivity implements View.OnClickListener, OnAlertDialogActionClickListener {
+public class WriteActivity extends AppCompatActivity implements OnAlertDialogActionClickListener, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
     private RichEditor editText;
     private Tools tools = Tools.getInstance();
     private String ediTime, editDate, editBody,
@@ -30,7 +34,7 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
     private String TAG = "Write";
     private boolean isEditMode = false;
     private String prev = "";
-    private ImageButton ibBold, ibItalic, ibUnderline, ibBullet;
+    private ImageButton ibBold, ibItalic, ibUnderline, ibBullet, ibClock, ibCalender;
     private boolean selectBold, selectItalic, selectUnderline, selectBullet = false;
 
     @Override
@@ -70,6 +74,8 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
         ibItalic = findViewById(R.id.action_italic);
         ibUnderline = findViewById(R.id.action_underline);
         ibBullet = findViewById(R.id.action_bullet);
+        ibClock = findViewById(R.id.action_clock);
+        ibCalender = findViewById(R.id.action_calender);
 
         ibBold.setOnClickListener(v -> {
             editText.setBold();
@@ -93,6 +99,10 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
             writeData();
             //closeKeyboard();
         });
+
+        ibClock.setOnClickListener(v -> showTimePicker());
+
+        ibCalender.setOnClickListener(v -> showDatePicker());
 
         tools.setSystemBarColor(this, R.color.grey_5);
         tools.setSystemBarLight(this);
@@ -123,7 +133,7 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
     private void writeData() {
         RealmEngine realmEngine = RealmEngine.getInstance();
         String bodyFinal = editText.getHtml();
-        if (editText.getHtml()!= null) {
+        if (editText.getHtml()!=null && !editText.getHtml().isEmpty()) {
             if (!isEditMode) {
                 realmEngine.insertData(entryTime, entryDate, bodyFinal);
                 prev = bodyFinal;
@@ -211,15 +221,6 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
         }else super.onBackPressed();
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.action_clock:
-                break;
-            case R.id.action_calender:
-                break;
-        }
-    }
 
     @Override
     public void onPositiveClick() {
@@ -229,5 +230,44 @@ public class WriteActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onNegativeClick() {
         finish();
+    }
+
+    private void showDatePicker(){
+        Calendar now = Calendar.getInstance();
+        DatePickerDialog dpd = DatePickerDialog.newInstance(
+                WriteActivity.this,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH)
+        );
+        dpd.setOkColor(getResources().getColor(R.color.grey_3));
+        dpd.setCancelColor(getResources().getColor(R.color.grey_3));
+        dpd.show(getSupportFragmentManager(), "Datepickerdialog");
+        Log.d(TAG, "showDatePicker: ");
+    }
+
+    private void showTimePicker(){
+        Calendar now = Calendar.getInstance();
+        TimePickerDialog tpd = TimePickerDialog.newInstance(
+                WriteActivity.this,
+                now.get(Calendar.HOUR),
+                now.get(Calendar.MINUTE),
+                false
+        );
+        tpd.setOkColor(getResources().getColor(R.color.grey_3));
+        tpd.setCancelColor(getResources().getColor(R.color.grey_3));
+        tpd.show(getSupportFragmentManager(), "Timepickerdialog");
+        Log.d(TAG, "showTimePicker: ");
+    }
+
+
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+
+    }
+
+    @Override
+    public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
+
     }
 }
