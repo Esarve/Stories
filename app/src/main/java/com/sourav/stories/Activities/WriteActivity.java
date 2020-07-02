@@ -1,13 +1,10 @@
 package com.sourav.stories.Activities;
 
-import android.content.Context;
-import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,27 +12,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sourav.stories.Interfaces.OnAlertDialogActionClickListener;
 import com.sourav.stories.R;
-import com.sourav.stories.Stuffs.RealmEngine;
-import com.sourav.stories.Stuffs.StoryData;
+import com.sourav.stories.Stuffs.CompactToolbar;
 import com.sourav.stories.Stuffs.Tools;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import net.dankito.richtexteditor.android.RichTextEditor;
+
 import java.util.Calendar;
 
-import jp.wasabeef.richeditor.RichEditor;
 
 public class WriteActivity extends AppCompatActivity implements OnAlertDialogActionClickListener, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
-    private RichEditor editText;
+    private RichTextEditor editText;
     private Tools tools = Tools.getInstance();
     private String ediTime, editDate, editBody,
             entryTime, entryDate, entryWeekDay, uid;
     private long timestamp;
     private String TAG = "Write";
     private boolean isEditMode = false;
-    private String prev = "";
-    private ImageButton ibBold, ibItalic, ibUnderline, ibBullet, ibClock, ibCalender;
-    private boolean selectBold, selectItalic, selectUnderline, selectBullet = false;
+    private CompactToolbar compactToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,39 +65,11 @@ public class WriteActivity extends AppCompatActivity implements OnAlertDialogAct
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             editText.setFocusedByDefault(true);
         }
-        ibBold = findViewById(R.id.action_bold);
-        ibItalic = findViewById(R.id.action_italic);
-        ibUnderline = findViewById(R.id.action_underline);
-        ibBullet = findViewById(R.id.action_bullet);
-        ibClock = findViewById(R.id.action_clock);
-        ibCalender = findViewById(R.id.action_calender);
 
-        ibBold.setOnClickListener(v -> {
-            editText.setBold();
-            setSelected(ibBold);
-        });
+        compactToolbar = findViewById(R.id.compactToolbar);
+        compactToolbar.setEditor(editText);
+        compactToolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
-        ibItalic.setOnClickListener(v -> {
-            editText.setItalic();
-            setSelected(ibItalic);
-        });
-        ibUnderline.setOnClickListener(v -> {
-            editText.setUnderline();
-            setSelected(ibUnderline);
-        });
-        ibBullet.setOnClickListener(v -> {
-            editText.setBullets();
-            setSelected(ibBullet);
-        });
-
-        fab.setOnClickListener(v -> {
-            writeData();
-            //closeKeyboard();
-        });
-
-        ibClock.setOnClickListener(v -> showTimePicker());
-
-        ibCalender.setOnClickListener(v -> showDatePicker());
 
         tools.setSystemBarColor(this, R.color.grey_5);
         tools.setSystemBarLight(this);
@@ -119,21 +86,13 @@ public class WriteActivity extends AppCompatActivity implements OnAlertDialogAct
             displayTime.setText(entryTime);
         }
 
-        editText.setOnInitialLoadListener(isReady -> {
-            if (isReady) {
-                editText.focusEditor();
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.SHOW_IMPLICIT, 0);
-            }
-        });
-
         tools.setListener(WriteActivity.this);
     }
 
-    private void writeData() {
+    /*private void writeData() {
         RealmEngine realmEngine = RealmEngine.getInstance();
         String bodyFinal = editText.getHtml();
-        if (editText.getHtml()!=null && !editText.getHtml().isEmpty()) {
+        if () {
             if (!isEditMode) {
                 realmEngine.insertData(entryTime, entryDate, bodyFinal);
                 prev = bodyFinal;
@@ -152,7 +111,7 @@ public class WriteActivity extends AppCompatActivity implements OnAlertDialogAct
             tools.errorToast(this, message);
         }
 
-    }
+    }*/
 
     private void closeKeyboard() {
         View view = this.getCurrentFocus();
@@ -163,68 +122,10 @@ public class WriteActivity extends AppCompatActivity implements OnAlertDialogAct
         }
     }
 
-    private void setSelected(ImageButton imageButton){
-        switch (imageButton.getId()) {
-            case R.id.action_bold:
-                if (selectBold){
-                    removefilter(imageButton);
-                    selectBold = false;
-                }else{
-                    setFilter(imageButton);
-                    selectBold = true;
-                }
-                break;
-            case R.id.action_italic:
-                if (selectItalic){
-                    removefilter(imageButton);
-                    selectItalic = false;
-                }else{
-                    setFilter(imageButton);
-                    selectItalic = true;
-                }
-                break;
-            case R.id.action_underline:
-                if (selectUnderline){
-                    removefilter(imageButton);
-                    selectUnderline = false;
-                }else{
-                    setFilter(imageButton);
-                    selectUnderline = true;
-                }
-                break;
-            case R.id.action_bullet:
-                if (selectBullet){
-                    removefilter(imageButton);
-                    selectBullet = false;
-                }else{
-                    setFilter(imageButton);
-                    selectBullet = true;
-                }
-                break;
-        }
-    }
-
-    private void setFilter(ImageButton imageButton){
-        imageButton.getBackground().setColorFilter(getResources().getColor(R.color.grey_10), PorterDuff.Mode.SRC_ATOP);
-        imageButton.invalidate();
-    }
-
-    private void removefilter(ImageButton imageButton){
-        imageButton.getBackground().clearColorFilter();
-        imageButton.invalidate();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (editText.getHtml() != null){
-            tools.createSimpleAlert(this, "You have unsaved entry. Do you want to save it before leaving?", "Save", "Leave");
-        }else super.onBackPressed();
-    }
-
 
     @Override
     public void onPositiveClick() {
-        writeData();
+        //writeData();
     }
 
     @Override
