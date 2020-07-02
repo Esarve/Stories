@@ -3,7 +3,6 @@ package com.sourav.stories.Stuffs;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import net.dankito.richtexteditor.android.command.BlockQuoteCommand;
 import net.dankito.richtexteditor.android.command.BoldCommand;
 import net.dankito.richtexteditor.android.command.InsertBulletListCommand;
 import net.dankito.richtexteditor.android.command.ItalicCommand;
@@ -39,7 +38,6 @@ public class CompactToolbar extends EditorToolbar {
         addCommand(new BoldCommand());
         addCommand(new ItalicCommand());
         addCommand(new UnderlineCommand());
-        addCommand(new BlockQuoteCommand());
         addCommand(new InsertBulletListCommand());
 
     }
