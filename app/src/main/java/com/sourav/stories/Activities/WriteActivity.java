@@ -1,6 +1,5 @@
 package com.sourav.stories.Activities;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +12,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sourav.stories.Interfaces.OnAlertDialogActionClickListener;
 import com.sourav.stories.R;
 import com.sourav.stories.Stuffs.CompactToolbar;
+import com.sourav.stories.Stuffs.Constants;
 import com.sourav.stories.Stuffs.RealmEngine;
 import com.sourav.stories.Stuffs.StoryData;
 import com.sourav.stories.Stuffs.Tools;
@@ -45,15 +45,15 @@ public class WriteActivity extends AppCompatActivity implements OnAlertDialogAct
     private void fetchData() {
         if (getIntent().getExtras() != null) {
             isEditMode = true;
-            ediTime = getIntent().getExtras().getString(Tools.TIME);
-            editDate = getIntent().getExtras().getString(Tools.DATE);
-            editBody = getIntent().getExtras().getString(Tools.BODY);
-            timestamp = getIntent().getExtras().getLong(Tools.TIMESTAMP);
-            uid = getIntent().getExtras().getString(Tools.UID);
+            ediTime = getIntent().getExtras().getString(Constants.TIME);
+            editDate = getIntent().getExtras().getString(Constants.DATE);
+            editBody = getIntent().getExtras().getString(Constants.BODY);
+            timestamp = getIntent().getExtras().getLong(Constants.TIMESTAMP);
+            uid = getIntent().getExtras().getString(Constants.UID);
         }
-        entryTime = tools.getCurrentTimeDate(Tools.TIME_FORMAT);
-        entryDate = tools.getCurrentTimeDate(Tools.DATE_FORMAT);
-        entryWeekDay = tools.getCurrentTimeDate(Tools.WEEKDAY_FORMAT);
+        entryTime = tools.getCurrentTimeDate(Constants.TIME_FORMAT);
+        entryDate = tools.getCurrentTimeDate(Constants.DATE_FORMAT);
+        entryWeekDay = tools.getCurrentTimeDate(Constants.WEEKDAY_FORMAT);
 
     }
 
@@ -62,12 +62,8 @@ public class WriteActivity extends AppCompatActivity implements OnAlertDialogAct
         TextView displayTime = findViewById(R.id.tvTime);
         TextView displayDate = findViewById(R.id.tvDate);
         editText = findViewById(R.id.etWrite);
-        editText. setPadding(16,16,16,16);
-        editText.focusEditor();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            editText.setFocusedByDefault(true);
-        }
-
+        editText.setPadding(16,16,16,16);
+        editText.setEditorFontFamily(Constants.EDITOR_FONT);
         fab.setOnClickListener(v -> writeData());
 
         compactToolbar = findViewById(R.id.compactToolbar);
@@ -91,12 +87,14 @@ public class WriteActivity extends AppCompatActivity implements OnAlertDialogAct
         }
 
         tools.setListener(WriteActivity.this);
+
+        editText.focusEditorAndShowKeyboardDelayed();
     }
 
     private void writeData() {
         RealmEngine realmEngine = RealmEngine.getInstance();
         editText.getCurrentHtmlAsync(s -> {
-            if (!s.isEmpty()){
+            if (!tools.getPlainText(s).isEmpty()){ //s returns an html. need to convert it to plain string for empty check
                 if (!isEditMode) {
                     realmEngine.insertData(entryTime, entryDate, s);
                 } else {

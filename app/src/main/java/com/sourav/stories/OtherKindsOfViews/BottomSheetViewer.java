@@ -17,7 +17,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.sourav.stories.Interfaces.OnBottomSheetClickListner;
 import com.sourav.stories.R;
-import com.sourav.stories.Stuffs.Tools;
+import com.sourav.stories.Stuffs.Constants;
 
 public class BottomSheetViewer extends BottomSheetDialogFragment {
     private OnBottomSheetClickListner clickListener;
@@ -34,10 +34,10 @@ public class BottomSheetViewer extends BottomSheetDialogFragment {
         view = inflater.inflate(R.layout.popup_viewer, container, false);
 
         if (getArguments()!=null){
-            time = getArguments().getString(Tools.TIME, "-");
-            date =getArguments().getString(Tools.DATE, "-");
-            body = getArguments().getString(Tools.BODY,"-");
-            pos = getArguments().getInt(Tools.POSITION,0);
+            time = getArguments().getString(Constants.TIME, "-");
+            date =getArguments().getString(Constants.DATE, "-");
+            body = getArguments().getString(Constants.BODY,"-");
+            pos = getArguments().getInt(Constants.POSITION,0);
         }
 
         initView(view);

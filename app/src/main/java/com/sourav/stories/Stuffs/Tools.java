@@ -35,31 +35,9 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Tools  {
-
-    //KEYs for bundle stuffs
-    public static final String TIME = "header";
-    public static final String TIMESTAMP = "timestamp";
-    public static final String  BODY = "body";
-    public static final String DATE = "date";
-    public static final String POSITION = "pos";
-    public static final String UID = "uid";
-
-    //Time date format stuffs
-    public static final String TIME_FORMAT = "hh:mm a";
-    public static final String DATE_FORMAT = "MMMM dd";
-    public static final String DATEWITHDAY_FORMAT = "MMMM dd, EEEE";
-    public static final String WEEKDAY_FORMAT = "EEEE";
-
-    public static final String USERNAME = "name";
-    public static final String PREFTYPE_NAME = "namepref";
-
-    //Backup Stuffs
-    public static final String BACKUPTIMEDATEFORMAT = "yyyyMMdd_HHmm";
-    public static final String BACKUPDIR ="Documents/Stories";
-    public static final String BACKUPNAME = "storybackup.bkp";
+    public static Tools instance;
 
 
-    private static Tools instance;
     private OnAlertDialogActionClickListener listener;
 
     public static Tools getInstance(){
@@ -110,7 +88,7 @@ public class Tools  {
     //Converts date & time in millis
     public static long generateMillis(String date, String time) {
         String myDate = date + " " + time;
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT + " " + TIME_FORMAT, Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT + " " + Constants.TIME_FORMAT, Locale.getDefault());
         try {
             Date dateObj = sdf.parse(myDate);
             return dateObj.getTime();
@@ -154,8 +132,8 @@ public class Tools  {
     }
 
     public String getDayOfWeekFromDate(String date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
-        SimpleDateFormat simpleDateFormatForWeekDay = new SimpleDateFormat(WEEKDAY_FORMAT, Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DATE_FORMAT, Locale.getDefault());
+        SimpleDateFormat simpleDateFormatForWeekDay = new SimpleDateFormat(Constants.WEEKDAY_FORMAT, Locale.getDefault());
         try {
             Date obj = simpleDateFormat.parse(date);
             if (obj != null) return simpleDateFormatForWeekDay.format(obj);

@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sourav.stories.Interfaces.OnSuccessListener;
 import com.sourav.stories.R;
+import com.sourav.stories.Stuffs.Constants;
 import com.sourav.stories.Stuffs.ListStoryData;
 import com.sourav.stories.Stuffs.RealmEngine;
 import com.sourav.stories.Stuffs.Tools;
@@ -72,9 +73,9 @@ public class BackupRestoreActivity extends AppCompatActivity implements OnSucces
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(listStoryData, ListStoryData.class);
         Log.d(TAG, "createBackup: "+ json);
-        File dir = new File(Environment.getExternalStorageDirectory(), Tools.BACKUPDIR);
+        File dir = new File(Environment.getExternalStorageDirectory(), Constants.BACKUPDIR);
         dir.mkdir();
-        File file = new File(dir, Tools.BACKUPNAME);
+        File file = new File(dir, Constants.BACKUPNAME);
 
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -91,8 +92,8 @@ public class BackupRestoreActivity extends AppCompatActivity implements OnSucces
     }
 
     private void restore(){
-        File dir = new File(Environment.getExternalStorageDirectory(), Tools.BACKUPDIR);
-        File file = new File(dir, Tools.BACKUPNAME);
+        File dir = new File(Environment.getExternalStorageDirectory(), Constants.BACKUPDIR);
+        File file = new File(dir, Constants.BACKUPNAME);
 
         if (dir.exists()){
             FileOutputStream outputStream = null;
