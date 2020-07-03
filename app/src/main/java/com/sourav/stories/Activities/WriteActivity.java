@@ -13,6 +13,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sourav.stories.Interfaces.OnAlertDialogActionClickListener;
 import com.sourav.stories.R;
 import com.sourav.stories.Stuffs.CompactToolbar;
+import com.sourav.stories.Stuffs.RealmEngine;
+import com.sourav.stories.Stuffs.StoryData;
 import com.sourav.stories.Stuffs.Tools;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -66,6 +68,8 @@ public class WriteActivity extends AppCompatActivity implements OnAlertDialogAct
             editText.setFocusedByDefault(true);
         }
 
+        fab.setOnClickListener(v -> writeData());
+
         compactToolbar = findViewById(R.id.compactToolbar);
         compactToolbar.setEditor(editText);
         compactToolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -89,29 +93,28 @@ public class WriteActivity extends AppCompatActivity implements OnAlertDialogAct
         tools.setListener(WriteActivity.this);
     }
 
-    /*private void writeData() {
+    private void writeData() {
         RealmEngine realmEngine = RealmEngine.getInstance();
-        String bodyFinal = editText.getHtml();
-        if () {
-            if (!isEditMode) {
-                realmEngine.insertData(entryTime, entryDate, bodyFinal);
-                prev = bodyFinal;
-            } else {
-                realmEngine.deleteData(uid);
-                realmEngine.addSpecificStory(
-                        new StoryData(
-                                ediTime, editDate, bodyFinal, timestamp, uid
-                        )
-                );
+        editText.getCurrentHtmlAsync(s -> {
+            if (!s.isEmpty()){
+                if (!isEditMode) {
+                    realmEngine.insertData(entryTime, entryDate, s);
+                } else {
+                    realmEngine.deleteData(uid);
+                    realmEngine.addSpecificStory(
+                            new StoryData(
+                                    ediTime, editDate, s, timestamp, uid
+                            )
+                    );
+                }
+                Log.d(TAG, "writeData: Modified Millis: " + Tools.generateMillis(editDate, ediTime));
+                finish();
+            }else {
+                tools.errorToast(this,"Nothing to save!");
             }
-            Log.d(TAG, "writeData: Modified Millis: " + Tools.generateMillis(editDate, ediTime));
-            finish();
-        } else {
-            String message = "Text field is empty";
-            tools.errorToast(this, message);
-        }
 
-    }*/
+        });
+    }
 
     private void closeKeyboard() {
         View view = this.getCurrentFocus();
