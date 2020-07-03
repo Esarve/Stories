@@ -2,64 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rtToolbarParent"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/grey_3"
+    android:layout_height="46dp"
+    android:background="@color/colorPrimary"
     android:orientation="horizontal">
-
-    <ImageButton
-        android:id="@+id/action_bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/grey_3"
-        android:src="@drawable/ic_baseline_format_bold_24"
-        android:tint="@color/colorPrimary" />
-
-    <ImageButton
-        android:id="@+id/action_italic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/grey_3"
-        android:src="@drawable/ic_baseline_format_italic_24"
-        android:tint="@color/colorPrimary" />
-
-    <ImageButton
-        android:id="@+id/action_underline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/grey_3"
-        android:src="@drawable/ic_baseline_format_underlined_24"
-        android:tint="@color/colorPrimary" />
-
-    <ImageButton
-        android:id="@+id/action_bullet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/grey_3"
-        android:src="@drawable/ic_baseline_format_list_bulleted_24"
-        android:tint="@color/colorPrimary" />
-    <LinearLayout
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="2dp"
-        android:background="@color/grey_300"/>
 
     <ImageButton
         android:id="@+id/action_calender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/grey_3"
+        android:backgroundTint="@color/colorPrimary"
         android:src="@drawable/ic_outline_calendar_today_24"
-        android:tint="@color/colorPrimary" />
+        android:tint="@color/grey_3" />
 
     <ImageButton
         android:id="@+id/action_clock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/grey_3"
+        android:backgroundTint="@color/colorPrimary"
         android:src="@drawable/ic_clock_24dp"
-        android:tint="@color/colorPrimary" />
+        android:tint="@color/grey_3" />
 
 </LinearLayout>

@@ -30,6 +30,7 @@ import com.sourav.stories.Interfaces.OnBottomSheetClickListner;
 import com.sourav.stories.Interfaces.OnRVClickListner;
 import com.sourav.stories.OtherKindsOfViews.BottomSheetViewer;
 import com.sourav.stories.R;
+import com.sourav.stories.Stuffs.Constants;
 import com.sourav.stories.Stuffs.RealmEngine;
 import com.sourav.stories.Stuffs.StoryData;
 import com.sourav.stories.Stuffs.Tools;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (tools.getFromSharedPref(this, Tools.PREFTYPE_NAME, Tools.USERNAME) == null){
+        if (tools.getFromSharedPref(this, Constants.PREFTYPE_NAME, Constants.USERNAME) == null){
             openSetupWizard();
         }
         super.onCreate(savedInstanceState);
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity
     private void initRecyclerView() {
         recyclerView = findViewById(R.id.recyclerView);
         newAdapter = new NewAdapter(this, story);
-        headerAdapter = new HeaderAdapter(tools.getFromSharedPref(this,Tools.PREFTYPE_NAME, Tools.USERNAME), realmResults.size(), this);
+        headerAdapter = new HeaderAdapter(tools.getFromSharedPref(this, Constants.PREFTYPE_NAME, Constants.USERNAME), realmResults.size(), this);
         MergeAdapter mergeAdapter = new MergeAdapter(headerAdapter, newAdapter);
         recyclerView.setAdapter(mergeAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -259,12 +260,12 @@ public class MainActivity extends AppCompatActivity
         long timestamp = story.get(i).getTimestamp();
 
         Bundle args = new Bundle();
-        args.putString(Tools.BODY, body);
-        args.putString(Tools.DATE, date);
-        args.putString(Tools.TIME, time);
-        args.putLong(Tools.TIMESTAMP, timestamp);
-        args.putInt(Tools.POSITION,i);
-        args.putString(Tools.UID, uid);
+        args.putString(Constants.BODY, body);
+        args.putString(Constants.DATE, date);
+        args.putString(Constants.TIME, time);
+        args.putLong(Constants.TIMESTAMP, timestamp);
+        args.putInt(Constants.POSITION,i);
+        args.putString(Constants.UID, uid);
 
         return args;
     }

@@ -10,6 +10,7 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sourav.stories.R;
+import com.sourav.stories.Stuffs.Constants;
 import com.sourav.stories.Stuffs.Tools;
 
 public class WizardActivity extends AppCompatActivity {
@@ -51,7 +52,7 @@ public class WizardActivity extends AppCompatActivity {
     }
 
     private void saveName() {
-        tools.saveToSharedPref(this, Tools.PREFTYPE_NAME, Tools.USERNAME, name);
+        tools.saveToSharedPref(this, Constants.PREFTYPE_NAME, Constants.USERNAME, name);
         finish();
     }
 

@@ -8,7 +8,7 @@ tools:context=".Activities.WriteActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottomBar"
+        android:layout_above="@+id/compactToolbarLayout"
         android:orientation="vertical">
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -49,15 +49,32 @@ tools:context=".Activities.WriteActivity">
         </androidx.cardview.widget.CardView>
 
 
-        <jp.wasabeef.richeditor.RichEditor
+        <net.dankito.richtexteditor.android.RichTextEditor
             android:id="@+id/etWrite"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
     </LinearLayout>
-    <include layout="@layout/richtexttoolbar"
-        android:layout_alignParentBottom="true"
+
+    <LinearLayout
+        android:id="@id/compactToolbarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        android:weightSum="10">
+        <com.sourav.stories.Stuffs.CompactToolbar
+            android:id="@+id/compactToolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_weight="1" />
+        <include
+            layout="@layout/richtexttoolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"/>
+    </LinearLayout>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_button"
@@ -66,7 +83,7 @@ tools:context=".Activities.WriteActivity">
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="18dp"
         app:backgroundTint="@color/colorAccentLight"
         app:tint="@android:color/white"
         app:elevation="2dp"
